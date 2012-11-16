@@ -1,6 +1,7 @@
 package uk.ac.prospects.w4.domain;
 
 /**
+ * couse
  * @author vasileiosl
  *         Date: 15/11/12
  *         Time: 11:12
