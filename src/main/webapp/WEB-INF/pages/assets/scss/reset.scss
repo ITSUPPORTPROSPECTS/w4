@@ -87,6 +87,16 @@ table {
 
 /* Helpers */
 
+.offscreen {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+
 .left {
   float: left;
 }
@@ -153,4 +163,33 @@ $i: 0;
 @while $i < 100 {
   $i: $i + 5;
   .width#{$i} {width: $i - 0.1%;}
+}
+
+/* Sprites */
+
+%sprite {
+  background: {
+    image: url('../img/sprites.gif');
+    repeat: no-repeat;
+  }
+}
+
+%leftsprite {
+  @extend %sprite;
+  padding-left: 16px;
+}
+
+%rightsprite {
+  @extend %sprite;
+  padding-right: 16px;
+}
+
+.next {
+  @extend %rightsprite;
+  background-position: 0px 0px;
+}
+
+.prev {
+  @extend %leftsprite;
+  background-position: -16px -16px;
 }
