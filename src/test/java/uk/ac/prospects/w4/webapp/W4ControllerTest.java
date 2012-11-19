@@ -16,7 +16,7 @@ public class W4ControllerTest {
 	public void testAnyPage(){
 		W4Controller controller = new W4Controller();
 
-		assertThat((String)controller.anyPage().getModel().get("msg"), CoreMatchers.equalTo("Any page"));
+		assertThat((String)controller.anyPage("index").getModel().get("msg"), CoreMatchers.equalTo("Any page"));
 	}
 
 }
