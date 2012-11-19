@@ -37,14 +37,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetCourses }
-     * 
-     */
-    public GetCourses createGetCourses() {
-        return new GetCourses();
-    }
-
-    /**
      * Create an instance of {@link GetCoursesResponse }
      * 
      */
@@ -53,19 +45,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetCourses12Response }
-     * 
-     */
-    public GetCourses12Response createGetCourses12Response() {
-        return new GetCourses12Response();
-    }
-
-    /**
      * Create an instance of {@link GetCourses12 }
      * 
      */
     public GetCourses12 createGetCourses12() {
         return new GetCourses12();
+    }
+
+    /**
+     * Create an instance of {@link GetCourses }
+     * 
+     */
+    public GetCourses createGetCourses() {
+        return new GetCourses();
+    }
+
+    /**
+     * Create an instance of {@link GetCourses12Response }
+     * 
+     */
+    public GetCourses12Response createGetCourses12Response() {
+        return new GetCourses12Response();
     }
 
     /**
