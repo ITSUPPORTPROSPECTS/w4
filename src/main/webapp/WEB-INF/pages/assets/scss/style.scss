@@ -1,7 +1,11 @@
 // SASS Color Variables
+// Backgrounds
+$widgetBackground: #FFFFFF;
 // Tab colors
 $selectedTabColor: #336699;
-$hoverTabColor: #FF6600;
+// Links
+$linkColor: #003366;
+$hoverColor: #FF6600;
 // Border colors
 $borderColor: #CCCCCC;
 // Text colors
@@ -13,28 +17,31 @@ $darkTextShadowColor: rgba(107, 107, 107, 0.9);
 //Button colors
 $defaultButton: #d0d0d0;
 $primaryButton: #6aa0d6;
+//Calendar
+$cellColor: #ECECEC;
 
 // SASS Mixins
-@mixin border-radius($radius) {
+@mixin georgia {
+    font-family: Georgia, Garamond, "Times New Roman", "MS Serif", "New York", serif;
+}
+
+@mixin arial {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+@mixin border-radius($radius...) {
 	-moz-border-radius: $radius;
 	-webkit-border-radius: $radius;
 	border-radius: $radius;
 }
 
-/*@mixin box-shadow($x, $y, $size, $color) {
-	-moz-box-shadow: $x $y $size $color;
-	-webkit-box-shadow: $x $y $size $color;
-	box-shadow: $x $y $size $color;
-}*/
 @mixin box-shadow($shadow...) {
     -moz-box-shadow: $shadow;
     -webkit-box-shadow: $shadow;
     box-shadow: $shadow;
 }
 
-@mixin georgia {
-	font-family: Georgia, Garamond, "Times New Roman", "MS Serif", "New York", serif;
-}
+
 
 @mixin linear-gradient($topColor, $bottomColor) {
 	background-color: mix($topColor, $bottomColor);
@@ -63,9 +70,18 @@ $primaryButton: #6aa0d6;
 
 //Structure
 body {
-	font: small Arial, Helvetica, sans-serif;
+	@include arial;
+    font-size: small;
 	color: $baseTextColor;
 	background-color: #fff;
+}
+
+a:link {
+    color: $linkColor;
+}
+
+a:hover, a:focus {
+    color: $hoverColor;
 }
 
 .btn {
@@ -80,17 +96,23 @@ body {
 	@include linear-gradient(lighten($defaultButton, 20%), darken($defaultButton, 10%));
 	@include box-shadow(0px 1px 2px #888888);
 	@include border-radius(6px);
+    &:hover, &:focus {
+        @include linear-gradient(lighten($defaultButton, 15%), darken($defaultButton, 10%));        
+    }
+    &:active {
+        background: darken($defaultButton, 10%);
+    }
 }
-
-.btn:hover {@include linear-gradient(lighten($defaultButton, 15%), darken($defaultButton, 10%));}
-.btn:active {background: darken($defaultButton, 10%);}
 
 .btn-primary {
 	@include btn-dark($primaryButton);
+    &:hover, &:focus {
+        @include linear-gradient(lighten($primaryButton, 15%), darken($primaryButton, 20%));
+    }
+    &:active {
+        background: darken($primaryButton, 20%);
+    }
 }
-
-.btn-primary:hover {@include linear-gradient(lighten($primaryButton, 15%), darken($primaryButton, 20%));}
-.btn-primary:active {background: darken($primaryButton, 20%);}
 
 //Widget
 #w4 {
@@ -98,8 +120,8 @@ body {
 	@include border-radius(5px);
 	border: 1px solid $borderColor;
 	width: 99%;
-	margin: 1em auto;
-	margin-top: 1em;
+	margin: 0 auto;
+    background: $widgetBackground;
 	.inner {
 		padding: 1em;
 		h2 {
@@ -114,7 +136,7 @@ body {
 }
 
 //Lists
-ul, ol {
+#w4 ul {
 	font-size: 0.85em;
 	line-height: 1.3em;
 	margin: 2px 0 10px;
@@ -153,8 +175,43 @@ ul, ol {
 	}
 }
 
-//Forms
+//Tabs
+ul.tabs {
+    display: block;
+    list-style-type: none;
+    margin: 0;
+    margin-top: 1em; //TEMP
+    padding: 0;
+    z-index: 1;
+    font-size: 0.85em;
+    padding-left: 1em;
+    li {
+        float: left;
+        margin: 0 2px 0 3px;
+        margin-bottom: -1px;
+        a {
+            display: block;
+            padding: 6px 9px 4px;
+            font-weight: bold;
+            text-decoration: none;
+            color: lighten($selectedTabColor, 20%);
+            &:hover, &:focus, &:active {
+                color: $hoverColor;
+            }
+        }
+        &.selected {
+            border: 1px solid $borderColor;
+            border-bottom: none;
+            @include border-radius(5px 5px 0 0);
+            background: $widgetBackground;
+            a {
+                color: $selectedTabColor;
+            }
+        }
+    }
+}
 
+//Forms
 form {
 	label {
 		color: lighten($baseTextColor, 15%);
@@ -186,232 +243,86 @@ form {
 }
 
 //Calendar
-
-.calendar_nav
-    {
-    font-size: 1.4em;
-    margin-bottom: 0;
+#w4 .calendar_nav {
+    background: #F9F9F9;
     text-align: center;
-    color: #666666;
-    background-color: #efefef;
-    border: 1px solid #e6e6e6;
-    border-bottom-width: 0;
-    padding: 0.2em 0;
-    -webkit-border-top-right-radius: 5px;
-    -webkit-border-top-left-radius: 5px;
-    -moz-border-radius-topleft:5px;
-    -moz-border-radius-topright:5px;
-    border-radius: 5px 5px 0 0;
+    border-top: 1px solid $borderColor;
+    border-bottom: 1px solid $borderColor;
+    margin-bottom: 0.5em;
+    h2 {
+        display: inline-block;
+        margin: 0.25em;
+        color: #666;
+        font-size: 1em;
+        font-weight: bold;
+        @include arial;
     }
-.calendar_nav h2 {
-    display: inline;
-    margin: 0 1em;
-    font-size: small;
+    .prev_month, .next_month {
+        text-decoration: none;
+        opacity: 0.7;
+        &:hover {
+            opacity: 1;
+        }
     }
+}
 
-#main_content .calendar
-    {
+#w4 .calendar {
     table-layout: fixed;
     text-align: center;
     width: 100%;
+    color: #666;
+    border-collapse: collapse;
+    border-spacing: 0;
+    thead {
+        font-size: 0.75em;
     }
-div.grid_10 .calendar
-    {
-    
-    font-size: x-small;
+    tbody {
+        font-size: 0.85em;
+        tr {
+            vertical-align: baseline;
+            td {
+                border: 1px solid #DDD;
+                background: $cellColor;
+                vertical-align: middle;
+                @include box-shadow(-0.2em -0.2em 0.3em rgba(0,0,0,0.04) inset);
+                span, a {
+                    padding: 0.7em 0.4em;
+                    display: block;
+                }
+                a {
+                    text-decoration: none;
+                    font-weight: bold;
+                    &:hover, &:focus {
+                        background: darken($cellColor, 20%);
+                        color: #FFF;
+                    }
+                }
+                &.past_date {
+                    background: lighten($cellColor, 5%);
+                }
+                &.selected_day {
+                    background: darken($cellColor, 40%);
+                    color: #FFF;
+                    a {
+                        color: #FFF;
+                    }
+                }
+                &.prev_month, &.next_month {
+                    background-color: lighten($cellColor, 40%);
+                }
+            }
+        }
     }
-div.grid_4 .calendar
-    {
-    
-    font-size: xx-small;
-    }
-.calendar thead {
-    background-color: #efefef;
-    border: 1px solid #e6e6e6;
-    border-top: 0;
-    border-bottom: 0;
-    color: #666666;
-    }
-.calendar th{
-        background-color: #efefef;    
-    }
-.calendar tbody a
-    {
-    display: block;
-    }
-#main_content .calendar tbody tr
-    {
-    height: 45px;
-    }
-#main_content div.grid_4 .calendar tbody tr
-    {
-    height: 25px;
-    }
-#main_content .calendar tbody td
-    {
-    background-color: #ececec;
-    background-image: url(/assets/images/bgs/corner_bevel.gif);
-    background-position: top right;
-    border: 1px solid #dddddd;
-    box-shadow: -0.2em -0.2em 0.3em rgba(0, 0, 0, 0.04) inset;
-    font-size: 1.5em;
-    vertical-align: middle;
-    }
-
-#main_content div.grid_4 .calendar tbody td
-    {
-    font-size: 1.3em;
-    padding: 0.4em;
-    }
-
-#main_content .calendar tbody td.prev_month, 
-#main_content .calendar tbody td.next_month
-    {
-    background-color: #ddd;
-    background-image: url(/assets/images/bgs/corner_bevel_stripey.gif);
-    }
-#main_content .calendar td.today
-    {
-    background-color: #fff;
-    }
-#main_content .calendar td.past_date
-    {
-    background-color: #f9f9f9;
-    color: #888;
-    }
-#main_content .calendar td.selected_day
-    {
-    background-color: #777;
-    background-image: none;
-    color: #fff;
-    }
-#main_content .calendar td.selected_day a
-    {
-    color: #fff;
-    }
-.calendar_date
-    {
-    padding: 1.5em 0;
-    }
-
-
-#main_content #calendar_results
-    {
-    margin-left: 0;
-    }
-#calendar_results ul
-    {
-    margin: 0;
-    padding: 0;
-    }
-#calendar_results li
-    {
-    border-top: 1px solid #ddd;
-    list-style: none;
-    margin: 0 0 2em;
-    padding: 0;
-    }
-#calendar_results h3
-    {
-    margin-top: 0;
-    padding: 1.5em 0;
-    }
-#calendar_results li ul, 
-#calendar_results li dl, 
-#calendar_results li dt, 
-#calendar_results li dd
-    {
-    margin: 0;
-    padding: 0;
-    }
-#calendar_results li li
-    {
-    border: none;
-    margin: 0;
-    padding: 0;
-    }
-.results_col1, 
-.results_col2, 
-.results_col3, 
-.results_col4, 
-.results_col5
-    {
-    display: inline;
-    float: left;
-    height: 85px;
-    height: auto !important;
-    margin: 0 15px 0 5px;
-    min-height: 85px;
-    padding: 0 10px 5px 0;
-    }
-.results_col1
-    {
-    margin-left: 0;
-    width: 6.6%;
-    }
-.results_col2, 
-.results_col4
-    {
-    width: 16.6%;
-    }
-.results_col3
-    {
-    border-right: 1px dashed #c4c4c4;
-    width: 16.45%;
-    }
-.results_col5
-    {
-    border-left: 1px dashed #c4c4c4;
-    margin-right: 0;
-    width: 26.75%;
-    }
-#calendar_results li dt
-    {
-    color: #999;
-    font-family: tahoma,Arial,Helvetica,sans-serif;
-    font-size: 0.85em;
-    font-weight: normal;
-    letter-spacing: 1px;
-    }
-#calendar_results li dd
-    {
-    padding-bottom: 0.85em;
-    }
-.attendance dd
-    {
-    font-size: 2.50em;
-    }
-.actions
-    {
-    font-size: 0.85em;
-    }
-.actions a
-    {
-    display: block;
-    height: 1.7em;
-    margin-left: 20px;
-    padding-bottom: 0.4em;
-    }
-
-
-
-.calendar_event_list .event_available
-    {
-    color: #4F8A10;
-    }
-    
-.calendar_event_list .event_unavailable
-    {
-    color: #D8000C;
-    }
+}
 
 //TEMPORARY
 
-h3 {
+h3.comment {
 	color: lighten($baseTextColor, 50%);
 	margin-bottom: 1em;
+    margin-top: 1em;
 }
 
-h3::before {
+h3.comment::before {
 	content: "//";
 }
