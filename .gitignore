@@ -6,3 +6,4 @@ atlassian-ide-plugin.xml
 *.settings
 *.project
 *.classpath
+copy_cms.bat
