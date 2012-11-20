@@ -13,31 +13,25 @@ public class Course {
 
 	private String title;
 
-	private String city;
-
-	private String postcode;
-
 	private Date startDate;
 
 	private Date endDate;
 
 	private String id;
 
-	public String getCity() {
-		return city;
-	}
+	private String url;
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+	private String description;
 
-	public String getPostcode() {
-		return postcode;
-	}
+	private String providerId;
 
-	public void setPostcode(String postcode) {
-		this.postcode = postcode;
-	}
+	private String providerTitle;
+
+	private String providerLongitude;
+
+	private String providerLatitude;
+
+	private String providerUrl;
 
 	public Date getEndDate() {
 		return endDate;
@@ -69,5 +63,61 @@ public class Course {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getProviderTitle() {
+		return providerTitle;
+	}
+
+	public void setProviderTitle(String providerTitle) {
+		this.providerTitle = providerTitle;
+	}
+
+	public String getProviderId() {
+		return providerId;
+	}
+
+	public void setProviderId(String providerId) {
+		this.providerId = providerId;
+	}
+
+	public String getProviderLongitude() {
+		return providerLongitude;
+	}
+
+	public void setProviderLongitude(String providerLongitude) {
+		this.providerLongitude = providerLongitude;
+	}
+
+	public String getProviderLatitude() {
+		return providerLatitude;
+	}
+
+	public void setProviderLatitude(String providerLatitude) {
+		this.providerLatitude = providerLatitude;
+	}
+
+	public String getProviderUrl() {
+		return providerUrl;
+	}
+
+	public void setProviderUrl(String providerUrl) {
+		this.providerUrl = providerUrl;
 	}
 }
