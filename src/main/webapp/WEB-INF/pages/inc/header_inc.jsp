@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<title>NOT DEFINED</title>
-	<style type="text/css" media="all">@import "assets/css/reset.css";</style>
-	<style type="text/css" media="all">@import "assets/css/style.css";</style>
+	<style type="text/css" media="all">@import "/w4/assets/css/reset.css";</style>
+	<style type="text/css" media="all">@import "/w4/assets/css/style.css";</style>
 </head>
 <body>
 	<ul class="tabs clearfix">
