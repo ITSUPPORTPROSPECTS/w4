@@ -1,3 +1,4 @@
+$baseTextColor: #505050;
 /* 
 http://meyerweb.com/eric/tools/css/reset/ 
 2.0 | 20110126
@@ -96,7 +97,6 @@ table {
   overflow: hidden;
 }
 
-
 .left {
   float: left;
 }
@@ -111,6 +111,23 @@ table {
 
 .centertext {
   text-align: center;
+}
+
+.chilled {
+  color: lighten($baseTextColor, 20%);
+}
+
+.heavy {
+  font-weight: bold;
+  color: darken($baseTextColor, 20%);
+}
+
+.large {
+  font-size: 1.15em;
+}
+
+.small {
+  font-size: 0.85em;
 }
 
 /* Margins & Padding */

@@ -41,8 +41,6 @@ $cellColor: #ECECEC;
     box-shadow: $shadow;
 }
 
-
-
 @mixin linear-gradient($topColor, $bottomColor) {
 	background-color: mix($topColor, $bottomColor);
 	background-image: moz-linear-gradient(top, $topColor, $bottomColor);
@@ -119,7 +117,6 @@ a:hover, a:focus {
 	@include box-shadow(0 5px 5px lighten($borderColor, 10%));
 	@include border-radius(5px);
 	border: 1px solid $borderColor;
-	width: 99%;
 	margin: 0 auto;
     background: $widgetBackground;
 	.inner {
@@ -133,6 +130,9 @@ a:hover, a:focus {
 		}
 
 	}
+    p {
+        padding-bottom: 0.5em;
+    }
 }
 
 //Lists
@@ -184,17 +184,18 @@ ul.tabs {
     padding: 0;
     z-index: 1;
     font-size: 0.85em;
-    padding-left: 1em;
+    padding-left: 0.5em;
     li {
         float: left;
         margin: 0 2px 0 3px;
         margin-bottom: -1px;
         a {
             display: block;
-            padding: 6px 9px 4px;
+            padding: 6px 12px 5px;
             font-weight: bold;
             text-decoration: none;
             color: lighten($selectedTabColor, 20%);
+            font-size: 1.15em;
             &:hover, &:focus, &:active {
                 color: $hoverColor;
             }
@@ -244,10 +245,14 @@ form {
 
 //Calendar
 #w4 .calendar_nav {
-    background: #F9F9F9;
+    background: lighten($cellColor, 5%);
     text-align: center;
-    border-top: 1px solid $borderColor;
-    border-bottom: 1px solid $borderColor;
+    border: {
+        color: lighten($borderColor, 5%);
+        style: solid;
+        top-width: 1px;
+        bottom-width: 1px;
+    }
     margin-bottom: 0.5em;
     h2 {
         display: inline-block;
@@ -260,7 +265,7 @@ form {
     .prev_month, .next_month {
         text-decoration: none;
         opacity: 0.7;
-        &:hover {
+        &:hover, &:focus {
             opacity: 1;
         }
     }

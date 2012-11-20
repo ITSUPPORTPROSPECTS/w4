@@ -113,6 +113,23 @@ table {
   text-align: center;
 }
 
+.chilled {
+  color: #838383;
+}
+
+.heavy {
+  font-weight: bold;
+  color: #1d1d1d;
+}
+
+.large {
+  font-size: 1.15em;
+}
+
+.small {
+  font-size: 0.85em;
+}
+
 /* Margins & Padding */
 .margtop {
   margin-top: 1em;
@@ -250,7 +267,7 @@ table {
 }
 
 .next {
-  background-position: 4px 0px;
+  background-position: 0px 0px;
 }
 
 .prev {
