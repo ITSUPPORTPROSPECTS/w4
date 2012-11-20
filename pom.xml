@@ -134,10 +134,36 @@
                         <classpath/>
 
                         <argument>uk.ac.prospects.w4.client.CourseClient</argument>
-                        <argument>camera</argument>
                     </arguments>
                 </configuration>
             </plugin>
+            <!--
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+
+                <version>0.8.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-domain1</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+
+                        <configuration>
+                            <forceRegenerate>true</forceRegenerate>
+                            <schemaDirectory>src/main/resources</schemaDirectory>
+                            <schemaIncludes>
+                                <value>xcri_cap_1_2.xsd</value>
+                            </schemaIncludes>
+                            <generatePackage>domain</generatePackage>
+                            <generateDirectory>${project.build.directory}/generated-sources/domain</generateDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+
+            </plugin> -->
         </plugins>
     </build>
     <profiles>
