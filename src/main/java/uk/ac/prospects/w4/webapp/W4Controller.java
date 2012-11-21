@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.xml.sax.SAXException;
 import uk.ac.prospects.w4.domain.Course;
-import uk.ac.prospects.w4.repository.DefaultCourseSearch;
+import uk.ac.prospects.w4.repository.CourseRepository;
 import uk.ac.prospects.w4.services.helper.CourseGenerator;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,10 +25,10 @@ import java.util.List;
 @Controller
 public class W4Controller {
 
-	private DefaultCourseSearch courseRepository;
+	private CourseRepository courseRepository;
 
 	@Autowired
-	public void setCourseRepository(DefaultCourseSearch courseRepository) {
+	public void setCourseRepository(CourseRepository courseRepository) {
 		this.courseRepository = courseRepository;
 	}
 
@@ -42,9 +42,10 @@ public class W4Controller {
 
 	@RequestMapping(value = "/index.htm", method = RequestMethod.GET)
 	public ModelAndView retrieveCourseProviderAndCourse() throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
-		ModelAndView model = new ModelAndView("index");
+		String jsonResult = this.courseRepository.findAllCourses(100);
+		List<Course> courses = CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult);
 
-		List<Course> courses = CourseGenerator.generateCoursesFromJsonSearchResult("");
+		ModelAndView model = new ModelAndView("index");
 		model.addObject("courses", courses);
 		return model;
 	}

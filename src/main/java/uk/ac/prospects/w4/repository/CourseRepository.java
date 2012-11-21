@@ -36,7 +36,7 @@ public class CourseRepository {
 		this.type = type;
 	}
 
-	public String findAllCourses(){
+	public String findAllCourses(int maxResults){
 
 		// Configuration
 		ClientConfig clientConfig = new ClientConfig();
@@ -54,7 +54,7 @@ public class CourseRepository {
 		GpSearch search = new GpSearch(queryBuilder);
 		search.addIndex(index);
 		search.addType(type);
-		search.setMaxSearchResults(1);
+		search.setMaxSearchResults(maxResults);
 
 		JestResult result = null;
 		try {
