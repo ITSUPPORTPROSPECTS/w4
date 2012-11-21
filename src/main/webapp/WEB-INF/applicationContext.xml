@@ -4,7 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-    <bean name="courseRepository" id="courseRepository" class="uk.ac.prospects.w4.repository.CourseRepository">
+    <bean name="courseRepository" id="courseRepository" class="uk.ac.prospects.w4.repository.DefaultCourseSearch">
         <property name="index" value="courses"/>
         <property name="type" value="course" />
         <property name="server" value="http://coursedata.k-int.com:9200"/>

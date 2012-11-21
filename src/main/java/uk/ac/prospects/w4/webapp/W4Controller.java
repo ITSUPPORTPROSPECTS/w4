@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.xml.sax.SAXException;
 import uk.ac.prospects.w4.domain.Course;
-import uk.ac.prospects.w4.repository.CourseRepository;
+import uk.ac.prospects.w4.repository.DefaultCourseSearch;
 import uk.ac.prospects.w4.services.helper.CourseGenerator;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,10 +25,10 @@ import java.util.List;
 @Controller
 public class W4Controller {
 
-	private CourseRepository courseRepository;
+	private DefaultCourseSearch courseRepository;
 
 	@Autowired
-	public void setCourseRepository(CourseRepository courseRepository) {
+	public void setCourseRepository(DefaultCourseSearch courseRepository) {
 		this.courseRepository = courseRepository;
 	}
 
