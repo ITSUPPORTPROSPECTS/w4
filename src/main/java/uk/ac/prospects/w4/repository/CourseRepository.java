@@ -18,7 +18,7 @@ import java.util.LinkedHashSet;
  *         Time: 14:07
  */
 @Component
-public class DefaultCourseSearch {
+public class CourseRepository {
 
 	private String server;
 	private String index;
