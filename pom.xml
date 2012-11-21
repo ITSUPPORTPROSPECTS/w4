@@ -30,12 +30,6 @@
             <name>Maven Codehaus repository</name>
             <url>http://repository.codehaus.org/</url>
         </repository>
-
-        <repository>
-           <id>sonatype</id>
-           <name>Sonatype Groups</name>
-           <url>https://oss.sonatype.org/content/groups/public/</url>
-         </repository>
     </repositories>
 
     <dependencies>
@@ -93,10 +87,11 @@
             <artifactId>xom</artifactId>
             <version>1.1</version>
         </dependency>
+
         <dependency>
-          <groupId>io.searchbox</groupId>
-          <artifactId>jest</artifactId>
-          <version>0.0.1</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>com.springsource.javax.servlet.jsp.jstl</artifactId>
+            <version>1.2.0</version>
         </dependency>
     </dependencies>
 
