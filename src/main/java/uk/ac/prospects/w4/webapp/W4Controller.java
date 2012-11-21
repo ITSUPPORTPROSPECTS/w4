@@ -12,6 +12,7 @@ import uk.ac.prospects.w4.repository.CourseGenerator;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public class W4Controller {
 	}
 
 	@RequestMapping(value = "/test.htm", method = RequestMethod.GET)
-	public void retrieveCourseProviderAndCourse() throws IOException, SAXException, XPathExpressionException, ParserConfigurationException {
+	public void retrieveCourseProviderAndCourse() throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
 		//ModelAndView model = new ModelAndView(page);
 		List<Course> courses = CourseGenerator.generateCoursesFromJsonSearchResult("");
 		System.out.println(courses.size());

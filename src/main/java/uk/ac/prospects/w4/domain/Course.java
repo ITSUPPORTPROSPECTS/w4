@@ -13,16 +13,13 @@ public class Course {
 
 	private String title;
 
-	private Date startDate;
-
-	private Date endDate;
-
 	private String id;
 
 	private String url;
 
 	private String description;
 
+	//provider information
 	private String providerId;
 
 	private String providerTitle;
@@ -32,6 +29,18 @@ public class Course {
 	private String providerLatitude;
 
 	private String providerUrl;
+
+	//presentations information
+	private Date startDate;
+
+	private Date endDate;
+
+	private String street;
+
+	private String town;
+
+	private String postcode;
+
 
 	public Date getEndDate() {
 		return endDate;
@@ -119,5 +128,46 @@ public class Course {
 
 	public void setProviderUrl(String providerUrl) {
 		this.providerUrl = providerUrl;
+	}
+
+	public String getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getTown() {
+		return town;
+	}
+
+	public void setTown(String town) {
+		this.town = town;
+	}
+
+	/**
+	 * generate a copy of course for different presentations
+	 *
+	 * @param course
+	 * @param index
+	 */
+	public void copyCourse(Course course, Integer index) {
+		this.setId(course.getId() + "suffix" + index);
+		this.setProviderLatitude(course.getProviderLatitude());
+		this.setTitle(course.getTitle());
+		this.setDescription(course.getDescription());
+		this.setProviderId(course.getProviderId());
+		this.setProviderLongitude(course.getProviderLongitude());
+		this.setProviderUrl(course.getProviderUrl());
+		this.setUrl(course.getUrl());
 	}
 }

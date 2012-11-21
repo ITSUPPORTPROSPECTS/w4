@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +48,13 @@ public class CourseGenerator {
 	private static final String XPATH_COURSE_PROVIDER_URL_FOR_JASON_RESULT = "provuri";
 	private static final String XPATH_COURSE_PROVIDER_LOCATION_LONGITUDE_FOR_JASON_RESULT = "provloc/lon";
 	private static final String XPATH_COURSE_PROVIDER_LOCATION_LATITUDE_FOR_JASON_RESULT = "provloc/lat";
+	//xpath for retrieving course presentations information
+	private static final String XPATH_COURSE_PRESENTATION_FOR_JASON_RESULT = "presentations/e";
+	private static final String XPATH_COURSE_PRESENTATION_END_DARE_FOR_JASON_RESULT = "end";
+	private static final String XPATH_COURSE_PRESENTATION_START_DARE_FOR_JASON_RESULT = "start";
+	private static final String XPATH_COURSE_PRESENTATION_POSTCODE_FOR_JASON_RESULT = "venue/postcode";
+	private static final String XPATH_COURSE_PRESENTATION_STREET_FOR_JASON_RESULT = "venue/street";
+	private static final String XPATH_COURSE_PRESENTATION_TOWN_FOR_JASON_RESULT = "venue/town";
 
 	/**
 	 * generate courses from json search results
@@ -58,7 +67,7 @@ public class CourseGenerator {
 	 * @throws ParserConfigurationException
 	 */
 	public static List<Course> generateCoursesFromJsonSearchResult(String jsonContent) throws IOException,
-			SAXException, XPathExpressionException, ParserConfigurationException {
+			SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
 		List<Course> courses = new ArrayList<Course>();
 
 		if (!StringUtils.hasText(jsonContent)) {
@@ -76,7 +85,21 @@ public class CourseGenerator {
 		for (int index = 0; index < courseNodeList.getLength(); index++) {
 			Course course = new Course();
 			addNodeInformationToCourse(courseNodeList.item(index), course);
-			courses.add(course);
+			NodeList presentations = getNubmerOfPresentations(courseNodeList.item(index));
+			for (int presentationIndex = 0; presentationIndex < presentations.getLength(); presentationIndex++) {
+
+				if (presentationIndex > 0) {
+					Course courseCopy = new Course();
+					courseCopy.copyCourse(course, presentationIndex);
+					addPresentationToCourse(courseCopy, presentations.item(presentationIndex));
+					courses.add(courseCopy);
+				} else {
+					addPresentationToCourse(course, presentations.item(presentationIndex));
+					courses.add(course);
+				}
+
+			}
+
 		}
 		return courses;
 	}
@@ -104,6 +127,13 @@ public class CourseGenerator {
 		return (NodeList) result;
 	}
 
+	/**
+	 * add course basic information and course provider details from a XML node to course
+	 *
+	 * @param node
+	 * @param course
+	 * @throws XPathExpressionException
+	 */
 	private static void addNodeInformationToCourse(Node node, Course course) throws XPathExpressionException {
 		XPathFactory xPathfactory = XPathFactory.newInstance();
 		XPath xpath = xPathfactory.newXPath();
@@ -132,6 +162,41 @@ public class CourseGenerator {
 
 		XPathExpression providerUrlExpr = xpath.compile(XPATH_COURSE_PROVIDER_URL_FOR_JASON_RESULT);
 		course.setProviderUrl(providerUrlExpr.evaluate(node));
+	}
+
+	private static NodeList getNubmerOfPresentations(Node node) throws XPathExpressionException {
+		XPathFactory xPathfactory = XPathFactory.newInstance();
+		XPath xpath = xPathfactory.newXPath();
+		XPathExpression presentationExpr = xpath.compile(XPATH_COURSE_PRESENTATION_FOR_JASON_RESULT);
+		return (NodeList) presentationExpr.evaluate(node, XPathConstants.NODESET);
+	}
+
+	private static void addPresentationToCourse(Course course, Node node) throws XPathExpressionException, ParseException {
+		XPathFactory xPathfactory = XPathFactory.newInstance();
+		XPath xpath = xPathfactory.newXPath();
+		XPathExpression presentationExpr = xpath.compile(XPATH_COURSE_PRESENTATION_END_DARE_FOR_JASON_RESULT);
+
+		//retrieve course date information
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String endDate = presentationExpr.evaluate(node);
+		if (StringUtils.hasText(endDate))
+			course.setEndDate(dateFormat.parse(endDate));
+
+		XPathExpression courseStartExpr = xpath.compile(XPATH_COURSE_PRESENTATION_START_DARE_FOR_JASON_RESULT);
+		String startDate = courseStartExpr.evaluate(node);
+
+		if (StringUtils.hasText(startDate))
+			course.setStartDate(dateFormat.parse(startDate));
+
+		//get venue postcode
+		XPathExpression postcodeExpr = xpath.compile(XPATH_COURSE_PRESENTATION_POSTCODE_FOR_JASON_RESULT);
+		course.setPostcode(postcodeExpr.evaluate(node));
+
+		XPathExpression streetExpr = xpath.compile(XPATH_COURSE_PRESENTATION_STREET_FOR_JASON_RESULT);
+		course.setStreet(streetExpr.evaluate(node));
+
+		XPathExpression townExpr = xpath.compile(XPATH_COURSE_PRESENTATION_TOWN_FOR_JASON_RESULT);
+		course.setTown(townExpr.evaluate(node));
 	}
 
 }
