@@ -1,4 +1,4 @@
-package uk.ac.prospects.w4.repository;
+package uk.ac.prospects.w4.services.helper;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
@@ -56,30 +56,32 @@ public class CourseGenerator {
 	private static final String XPATH_COURSE_PRESENTATION_STREET_FOR_JASON_RESULT = "venue/street";
 	private static final String XPATH_COURSE_PRESENTATION_TOWN_FOR_JASON_RESULT = "venue/town";
 
+	private static final XPath xpath = XPathFactory.newInstance().newXPath();
+
 	/**
 	 * generate courses from json search results
 	 *
-	 * @param jsonContent course json search result
+	 * @param jsonCSearchResult course json search result
 	 * @return a list of courses object
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws XPathExpressionException
 	 * @throws ParserConfigurationException
 	 */
-	public static List<Course> generateCoursesFromJsonSearchResult(String jsonContent) throws IOException,
+	public static List<Course> generateCoursesFromJsonSearchResult(String jsonCSearchResult) throws IOException,
 			SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
 		List<Course> courses = new ArrayList<Course>();
 
-		if (!StringUtils.hasText(jsonContent)) {
+		if (!StringUtils.hasText(jsonCSearchResult)) {
 			//retrieve all courses
-			jsonContent = retrieveAllCoursesByJson();
+			jsonCSearchResult = retrieveAllCoursesByJson();
 		}
 
 		//replace "": characters to "text":
-		jsonContent = jsonContent.replace(EMPTY_KEY, TEXT_KEY);
+		jsonCSearchResult = jsonCSearchResult.replace(EMPTY_KEY, TEXT_KEY);
 		XMLSerializer serializer = new XMLSerializer();
 		serializer.setTypeHintsEnabled(false);
-		JSON json = JSONSerializer.toJSON(jsonContent);
+		JSON json = JSONSerializer.toJSON(jsonCSearchResult);
 		String xml = serializer.write(json);
 		NodeList courseNodeList = getCoursesNodeList(xml);
 		for (int index = 0; index < courseNodeList.getLength(); index++) {
@@ -135,8 +137,8 @@ public class CourseGenerator {
 	 * @throws XPathExpressionException
 	 */
 	private static void addNodeInformationToCourse(Node node, Course course) throws XPathExpressionException {
-		XPathFactory xPathfactory = XPathFactory.newInstance();
-		XPath xpath = xPathfactory.newXPath();
+		//XPathFactory xPathfactory = XPathFactory.newInstance();
+		//XPath xpath = xPathfactory.newXPath();
 		//add course information to course object
 		XPathExpression idExpr = xpath.compile(XPATH_COURSE_ID_FOR_JSON_RESULT);
 		course.setId(idExpr.evaluate(node));
@@ -165,15 +167,15 @@ public class CourseGenerator {
 	}
 
 	private static NodeList getNubmerOfPresentations(Node node) throws XPathExpressionException {
-		XPathFactory xPathfactory = XPathFactory.newInstance();
-		XPath xpath = xPathfactory.newXPath();
+		//XPathFactory xPathfactory = XPathFactory.newInstance();
+		//XPath xpath = xPathfactory.newXPath();
 		XPathExpression presentationExpr = xpath.compile(XPATH_COURSE_PRESENTATION_FOR_JASON_RESULT);
 		return (NodeList) presentationExpr.evaluate(node, XPathConstants.NODESET);
 	}
 
 	private static void addPresentationToCourse(Course course, Node node) throws XPathExpressionException, ParseException {
-		XPathFactory xPathfactory = XPathFactory.newInstance();
-		XPath xpath = xPathfactory.newXPath();
+		//XPathFactory xPathfactory = XPathFactory.newInstance();
+		//XPath xpath = xPathfactory.newXPath();
 		XPathExpression presentationExpr = xpath.compile(XPATH_COURSE_PRESENTATION_END_DARE_FOR_JASON_RESULT);
 
 		//retrieve course date information
