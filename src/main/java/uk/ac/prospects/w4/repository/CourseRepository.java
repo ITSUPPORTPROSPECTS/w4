@@ -49,7 +49,7 @@ public class CourseRepository {
 		factory.setClientConfig(clientConfig);
 		JestClient client = factory.getObject();
 
-		QueryBuilder queryBuilder = QueryBuilders.queryString("title:engineering");
+		QueryBuilder queryBuilder = QueryBuilders.queryString("title:*");
 
 		GpSearch search = new GpSearch(queryBuilder);
 		search.addIndex(index);
