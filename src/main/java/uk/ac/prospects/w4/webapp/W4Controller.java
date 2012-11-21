@@ -1,5 +1,6 @@
 package uk.ac.prospects.w4.webapp;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.xml.sax.SAXException;
 import uk.ac.prospects.w4.domain.Course;
 import uk.ac.prospects.w4.repository.CourseGenerator;
+import uk.ac.prospects.w4.repository.CourseRepository;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -21,6 +23,13 @@ import java.util.List;
  */
 @Controller
 public class W4Controller {
+
+	private CourseRepository courseRepository;
+
+	@Autowired
+	public void setCourseRepository(CourseRepository courseRepository) {
+		this.courseRepository = courseRepository;
+	}
 
 	@RequestMapping(value = "/{page}.htm", method = RequestMethod.GET)
 	public ModelAndView anyPage(@PathVariable String page) {
@@ -37,5 +46,4 @@ public class W4Controller {
 		System.out.println(courses.size());
 		//return model;
 	}
-
 }
