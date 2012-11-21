@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.xml.sax.SAXException;
 import uk.ac.prospects.w4.domain.Course;
-import uk.ac.prospects.w4.repository.CourseGenerator;
 import uk.ac.prospects.w4.repository.CourseRepository;
+import uk.ac.prospects.w4.services.helper.CourseGenerator;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -40,10 +41,11 @@ public class W4Controller {
 	}
 
 	@RequestMapping(value = "/test.htm", method = RequestMethod.GET)
-	public void retrieveCourseProviderAndCourse() throws IOException, SAXException, XPathExpressionException, ParserConfigurationException {
+	public void retrieveCourseProviderAndCourse() throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
 		//ModelAndView model = new ModelAndView(page);
 		List<Course> courses = CourseGenerator.generateCoursesFromJsonSearchResult("");
 		System.out.println(courses.size());
 		//return model;
 	}
+
 }
