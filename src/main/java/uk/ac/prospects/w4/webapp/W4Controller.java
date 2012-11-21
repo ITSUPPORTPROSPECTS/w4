@@ -31,12 +31,13 @@ public class W4Controller {
 		return model;
 	}
 
-	@RequestMapping(value = "/test.htm", method = RequestMethod.GET)
-	public void retrieveCourseProviderAndCourse() throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
-		//ModelAndView model = new ModelAndView(page);
+	@RequestMapping(value = "/index.htm", method = RequestMethod.GET)
+	public ModelAndView retrieveCourseProviderAndCourse() throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
+		ModelAndView model = new ModelAndView("index");
+
 		List<Course> courses = CourseGenerator.generateCoursesFromJsonSearchResult("");
-		System.out.println(courses.size());
-		//return model;
+		model.addObject("courses", courses);
+		return model;
 	}
 
 }
