@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.xml.sax.SAXException;
 import uk.ac.prospects.w4.domain.Course;
@@ -42,9 +43,17 @@ public class W4Controller {
 	}
 
 	@RequestMapping(value = "/index.htm", method = RequestMethod.GET)
-	public ModelAndView retrieveCourseProviderAndCourse() throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
+	public ModelAndView retrieveCourseProviderAndCourse(	@RequestParam(value = "provid", required = false) String provId,
+															@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
+															@RequestParam(value = "toStartDate", required = false) String toStartDate,
+															@RequestParam(value = "keyword", required = false) String keyword
+	) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
 		CourseSearchArgument argument = new CourseSearchArgument();
 		argument.setMaxResults(10);
+		argument.setProviderId(provId);
+		argument.setFromStartDate(fromStartDate);
+		argument.setToStartDate(toStartDate);
+		argument.setKeyword(keyword);
 
 		String jsonResult = this.courseRepository.findAllCourses(argument);
 		List<Course> courses = CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult);

@@ -82,6 +82,18 @@ public class CourseRepository {
 		if (StringUtils.hasText(argument.getStartDate())){
 			sb.append(" AND presentations.start:" + argument.getStartDate());
 		}
+		if (StringUtils.hasText(argument.getFromStartDate()) || StringUtils.hasText(argument.getToStartDate())) {
+			sb.append(" AND presentations.start:[");
+			sb.append(StringUtils.hasText(argument.getFromStartDate()) ? "\"" + argument.getFromStartDate() + "\"" : "*");
+			sb.append(" TO ");
+			sb.append(StringUtils.hasText(argument.getToStartDate()) ? "\"" + argument.getToStartDate() + "\"" : "*");
+			sb.append("]");
+		}
+
+		//To search for the keyword in all fields
+		if (StringUtils.hasText(argument.getKeyword())){
+			sb.append(" AND " + argument.getKeyword());
+		}
 
 		QueryBuilder queryBuilder = QueryBuilders.queryString(sb.toString());
 		return queryBuilder;

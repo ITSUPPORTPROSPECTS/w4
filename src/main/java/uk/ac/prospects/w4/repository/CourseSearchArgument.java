@@ -11,6 +11,9 @@ public class CourseSearchArgument {
 	private String providerId;
 	private String startDate;
 	private String courseTitle;
+	private String fromStartDate;
+	private String toStartDate;
+	private String keyword;
 
 	private int maxResults;
 
@@ -52,5 +55,29 @@ public class CourseSearchArgument {
 
 	public void setMaxResults(int maxResults) {
 		this.maxResults = maxResults;
+	}
+
+	public String getFromStartDate() {
+		return fromStartDate;
+	}
+
+	public void setFromStartDate(String fromStartDate) {
+		this.fromStartDate = fromStartDate;
+	}
+
+	public String getToStartDate() {
+		return toStartDate;
+	}
+
+	public void setToStartDate(String toStartDate) {
+		this.toStartDate = toStartDate;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 }
