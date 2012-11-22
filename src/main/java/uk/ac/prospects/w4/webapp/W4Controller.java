@@ -48,6 +48,7 @@ public class W4Controller {
 															@RequestParam(value = "keyword", required = false) String keyword,
 															@RequestParam(value = "startDate", required = false) String startDate,
 															@RequestParam(value = "courseTitle", required = false) String courseTitle,
+															@RequestParam(value = "provTitle", required = false) String provTitle,
 															Boolean excludeEmptyStartDates
 	) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
 		CourseSearchArgument argument = new CourseSearchArgument();
@@ -58,6 +59,7 @@ public class W4Controller {
 		argument.setKeyword(keyword);
 		argument.setStartDate(startDate);
 		argument.setCourseTitle(courseTitle);
+		argument.setProviderTitle(provTitle);
 
 		if (BooleanUtils.isTrue(excludeEmptyStartDates)){
 			argument.setExcludeEmptyStartDates(true);
@@ -77,8 +79,9 @@ public class W4Controller {
 															@RequestParam(value = "toStartDate", required = false) String toStartDate,
 															@RequestParam(value = "keyword", required = false) String keyword,
 															@RequestParam(value = "startDate", required = false) String startDate,
-															@RequestParam(value = "courseTitle", required = false) String courseTitle) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
-		ModelAndView model = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate, courseTitle, false);
+															@RequestParam(value = "courseTitle", required = false) String courseTitle,
+															@RequestParam(value = "provTitle", required = false) String provTitle) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
+		ModelAndView model = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate, courseTitle, provTitle, false);
 		model.setViewName("map");
 		return model;
 	}
