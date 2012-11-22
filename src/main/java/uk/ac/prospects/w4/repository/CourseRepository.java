@@ -8,6 +8,7 @@ import io.searchbox.client.config.ClientConstants;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
@@ -36,7 +37,7 @@ public class CourseRepository {
 		this.type = type;
 	}
 
-	public String findAllCourses(int maxResults){
+	public String findAllCourses(CourseSearchArgument argument){
 
 		// Configuration
 		ClientConfig clientConfig = new ClientConfig();
@@ -49,12 +50,12 @@ public class CourseRepository {
 		factory.setClientConfig(clientConfig);
 		JestClient client = factory.getObject();
 
-		QueryBuilder queryBuilder = QueryBuilders.queryString("title:*");
+		QueryBuilder queryBuilder = buildQuery(argument);
 
 		GpSearch search = new GpSearch(queryBuilder);
 		search.addIndex(index);
 		search.addType(type);
-		search.setMaxSearchResults(maxResults);
+		search.setMaxSearchResults(argument.getMaxResults());
 
 		JestResult result = null;
 		try {
@@ -64,5 +65,25 @@ public class CourseRepository {
 		}
 
 		return result.getJsonString();
+	}
+
+	private QueryBuilder buildQuery(CourseSearchArgument argument){
+		StringBuilder sb = new StringBuilder();
+
+		// Add the provider or get all courses that have a one
+		sb.append("provid:" + (StringUtils.hasText(argument.getProviderId()) ? argument.getProviderId() : "*"));
+
+		if (StringUtils.hasText(argument.getCourseTitle())){
+			sb.append(" AND title:" +  argument.getCourseTitle());
+		}
+		if (StringUtils.hasText(argument.getProviderTitle())){
+			sb.append(" AND provtitle:" + argument.getProviderTitle());
+		}
+		if (StringUtils.hasText(argument.getStartDate())){
+			sb.append(" AND presentations.start:" + argument.getStartDate());
+		}
+
+		QueryBuilder queryBuilder = QueryBuilders.queryString(sb.toString());
+		return queryBuilder;
 	}
 }
