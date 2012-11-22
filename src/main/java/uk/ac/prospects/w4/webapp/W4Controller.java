@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.xml.sax.SAXException;
 import uk.ac.prospects.w4.domain.Course;
 import uk.ac.prospects.w4.repository.CourseRepository;
+import uk.ac.prospects.w4.repository.CourseSearchArgument;
 import uk.ac.prospects.w4.services.helper.CourseGenerator;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -42,7 +43,10 @@ public class W4Controller {
 
 	@RequestMapping(value = "/index.htm", method = RequestMethod.GET)
 	public ModelAndView retrieveCourseProviderAndCourse() throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
-		String jsonResult = this.courseRepository.findAllCourses(100);
+		CourseSearchArgument argument = new CourseSearchArgument();
+		argument.setMaxResults(10);
+
+		String jsonResult = this.courseRepository.findAllCourses(argument);
 		List<Course> courses = CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult);
 
 		ModelAndView model = new ModelAndView("index");
