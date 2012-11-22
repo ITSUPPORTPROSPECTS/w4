@@ -14,9 +14,8 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 
 /**
- * @author vasileiosl
- *         Date: 21/11/12
- *         Time: 14:07
+ * Builds the query based on the search criteria and queries the XCRI CAP Aggregator using Jest as the client for the ElasticSearch Http Rest interface.
+ *
  */
 @Component
 public class CourseRepository {
