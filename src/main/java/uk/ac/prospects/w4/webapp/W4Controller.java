@@ -63,4 +63,13 @@ public class W4Controller {
 		return model;
 	}
 
+	@RequestMapping(value = "/map.htm", method = RequestMethod.GET)
+	public ModelAndView retrieveGoogleMapLocations(@RequestParam(value = "provid", required = false) String provId,
+															@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
+															@RequestParam(value = "toStartDate", required = false) String toStartDate,
+															@RequestParam(value = "keyword", required = false) String keyword) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
+		ModelAndView model = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword);
+		model.setViewName("map");
+		return model;
+	}
 }
