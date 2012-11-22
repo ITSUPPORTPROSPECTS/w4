@@ -50,6 +50,7 @@ public class CourseGenerator {
 	// xpath for retrieving course provider information
 	private static final String XPATH_COURSE_PROVIDER_ID_FOR_JASON_RESULT = "provid";
 	private static final String XPATH_COURSE_PROVIDER_URL_FOR_JASON_RESULT = "provuri";
+	private static final String XPAPH_COURSE_PROVIDER_TITLE = "provtitle";
 	private static final String XPATH_COURSE_PROVIDER_LOCATION_LONGITUDE_FOR_JASON_RESULT = "provloc/lon";
 	private static final String XPATH_COURSE_PROVIDER_LOCATION_LATITUDE_FOR_JASON_RESULT = "provloc/lat";
 	//xpath for retrieving course presentations information
@@ -225,6 +226,10 @@ public class CourseGenerator {
 
 		XPathExpression providerUrlExpr = xpath.compile(XPATH_COURSE_PROVIDER_URL_FOR_JASON_RESULT);
 		course.setProviderUrl(providerUrlExpr.evaluate(node));
+
+		XPathExpression providerTitleExpr = xpath.compile(XPAPH_COURSE_PROVIDER_TITLE);
+		course.setProviderTitle(providerTitleExpr.evaluate(node));
+
 	}
 
 	private static NodeList getNubmerOfPresentations(Node node) throws XPathExpressionException {

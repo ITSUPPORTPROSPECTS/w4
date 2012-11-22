@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="inc/header_inc.jsp" %>
 <!-- needs discussionn -->
@@ -24,7 +25,16 @@
                     Start date
                 </div>
                 <div class="item">
-                        ${course.startDate} dd/mm/yyyy if not set "See course details"
+                    <c:choose>
+                        <c:when test="${course.startDate!=null}">
+                            <fmt:formatDate pattern="yyyy-MM-dd" value="${course.startDate}"/>
+
+                        </c:when>
+                        <c:otherwise>
+                            See course details
+                        </c:otherwise>
+                    </c:choose>
+
                 </div>
             </div>
         </li>
