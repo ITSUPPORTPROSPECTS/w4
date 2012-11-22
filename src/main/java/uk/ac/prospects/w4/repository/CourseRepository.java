@@ -73,14 +73,14 @@ public class CourseRepository {
 		// Add the provider or get all courses that have a one
 		sb.append("provid:" + (StringUtils.hasText(argument.getProviderId()) ? argument.getProviderId() : "*"));
 
+		//Only courses that have a presentation start date will be returned
+		sb.append(" AND presentations.start:" + (StringUtils.hasText(argument.getStartDate()) ? argument.getStartDate() : "*"));
+
 		if (StringUtils.hasText(argument.getCourseTitle())){
 			sb.append(" AND title:" +  argument.getCourseTitle());
 		}
 		if (StringUtils.hasText(argument.getProviderTitle())){
 			sb.append(" AND provtitle:" + argument.getProviderTitle());
-		}
-		if (StringUtils.hasText(argument.getStartDate())){
-			sb.append(" AND presentations.start:" + argument.getStartDate());
 		}
 		if (StringUtils.hasText(argument.getFromStartDate()) || StringUtils.hasText(argument.getToStartDate())) {
 			sb.append(" AND presentations.start:[");

@@ -46,7 +46,8 @@ public class W4Controller {
 	public ModelAndView retrieveCourseProviderAndCourse(	@RequestParam(value = "provid", required = false) String provId,
 															@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
 															@RequestParam(value = "toStartDate", required = false) String toStartDate,
-															@RequestParam(value = "keyword", required = false) String keyword
+															@RequestParam(value = "keyword", required = false) String keyword,
+															@RequestParam(value = "startDate", required = false) String startDate
 	) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
 		CourseSearchArgument argument = new CourseSearchArgument();
 		argument.setMaxResults(10);
@@ -54,6 +55,7 @@ public class W4Controller {
 		argument.setFromStartDate(fromStartDate);
 		argument.setToStartDate(toStartDate);
 		argument.setKeyword(keyword);
+		argument.setStartDate(startDate);
 
 		String jsonResult = this.courseRepository.findAllCourses(argument);
 		List<Course> courses = CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult);
@@ -67,8 +69,9 @@ public class W4Controller {
 	public ModelAndView retrieveGoogleMapLocations(@RequestParam(value = "provid", required = false) String provId,
 															@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
 															@RequestParam(value = "toStartDate", required = false) String toStartDate,
-															@RequestParam(value = "keyword", required = false) String keyword) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
-		ModelAndView model = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword);
+															@RequestParam(value = "keyword", required = false) String keyword,
+															@RequestParam(value = "startDate", required = false) String startDate) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
+		ModelAndView model = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate);
 		model.setViewName("map");
 		return model;
 	}

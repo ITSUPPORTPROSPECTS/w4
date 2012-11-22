@@ -44,7 +44,7 @@ public class W4ControllerTest {
 
 
 	/**
-	 * test for {@link W4Controller#retrieveGoogleMapLocations(String, String, String, String)}
+	 * test for {@link W4Controller#retrieveGoogleMapLocations(String, String, String, String, String)}
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws XPathExpressionException
@@ -75,7 +75,7 @@ public class W4ControllerTest {
 		when(CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult)).thenReturn(courses);
 
 		controller.setCourseRepository(rep);
-		ModelAndView model = controller.retrieveGoogleMapLocations(null, null, null, null);
+		ModelAndView model = controller.retrieveGoogleMapLocations(null, null, null, null, null);
 		Mockito.verify(rep).findAllCourses(any(CourseSearchArgument.class));
 		PowerMockito.verifyStatic(times(1));
     	CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult);
