@@ -3,11 +3,8 @@ package uk.ac.prospects.w4.domain;
 import java.util.Date;
 
 /**
- * course
+ * Holds the course information displayed on the widget's pages.
  *
- * @author vasileiosl
- *         Date: 15/11/12
- *         Time: 11:12
  */
 public class Course {
 
