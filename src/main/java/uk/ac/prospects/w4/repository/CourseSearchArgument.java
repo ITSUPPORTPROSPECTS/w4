@@ -14,6 +14,7 @@ public class CourseSearchArgument {
 	private String fromStartDate;
 	private String toStartDate;
 	private String keyword;
+	private boolean excludeEmptyStartDates = false;
 
 	private int maxResults;
 
@@ -79,5 +80,13 @@ public class CourseSearchArgument {
 
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
+	}
+
+	public boolean isExcludeEmptyStartDates() {
+		return excludeEmptyStartDates;
+	}
+
+	public void setExcludeEmptyStartDates(boolean excludeEmptyStartDates) {
+		this.excludeEmptyStartDates = excludeEmptyStartDates;
 	}
 }

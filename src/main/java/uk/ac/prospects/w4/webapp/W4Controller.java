@@ -1,5 +1,6 @@
 package uk.ac.prospects.w4.webapp;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,7 +48,9 @@ public class W4Controller {
 															@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
 															@RequestParam(value = "toStartDate", required = false) String toStartDate,
 															@RequestParam(value = "keyword", required = false) String keyword,
-															@RequestParam(value = "startDate", required = false) String startDate
+															@RequestParam(value = "startDate", required = false) String startDate,
+															@RequestParam(value = "courseTitle", required = false) String courseTitle,
+															Boolean excludeEmptyStartDates
 	) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
 		CourseSearchArgument argument = new CourseSearchArgument();
 		argument.setMaxResults(10);
@@ -56,6 +59,11 @@ public class W4Controller {
 		argument.setToStartDate(toStartDate);
 		argument.setKeyword(keyword);
 		argument.setStartDate(startDate);
+		argument.setCourseTitle(courseTitle);
+
+		if (BooleanUtils.isTrue(excludeEmptyStartDates)){
+			argument.setExcludeEmptyStartDates(true);
+		}
 
 		String jsonResult = this.courseRepository.findAllCourses(argument);
 		List<Course> courses = CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult);
@@ -70,8 +78,9 @@ public class W4Controller {
 															@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
 															@RequestParam(value = "toStartDate", required = false) String toStartDate,
 															@RequestParam(value = "keyword", required = false) String keyword,
-															@RequestParam(value = "startDate", required = false) String startDate) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
-		ModelAndView model = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate);
+															@RequestParam(value = "startDate", required = false) String startDate,
+															@RequestParam(value = "courseTitle", required = false) String courseTitle) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
+		ModelAndView model = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate, courseTitle, false);
 		model.setViewName("map");
 		return model;
 	}
