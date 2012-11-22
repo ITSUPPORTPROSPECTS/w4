@@ -37,6 +37,13 @@ public class CourseRepository {
 		this.type = type;
 	}
 
+	/**
+	 * Queries the XCRI CAP aggregator using JEST as the elastic search client. <br/>
+	 * The query is constructed based on the {@code argument} passed to the method.
+	 *
+	 * @param argument The argument that holds the search criteria ({@link uk.ac.prospects.w4.repository.CourseSearchArgument})
+	 * @return
+	 */
 	public String findAllCourses(CourseSearchArgument argument){
 
 		// Configuration

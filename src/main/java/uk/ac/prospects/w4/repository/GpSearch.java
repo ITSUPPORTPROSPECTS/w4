@@ -4,9 +4,8 @@ import io.searchbox.core.Search;
 import org.elasticsearch.index.query.QueryBuilder;
 
 /**
- * @author vasileiosl
- *         Date: 21/11/12
- *         Time: 13:40
+ * Extends the {@link io.searchbox.core.Search} class to overide the {@code getURI} method and add the 'save' parameter to the URI that is used for the elastic search.
+ *
  */
 public class GpSearch extends Search {
 	private int maxSearchResults;

@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author vasileiosl
- *         Date: 22/11/12
- *         Time: 12:06
+ * Maps some basic regions to a list of postcodes that belong to them.
  */
 public class Location {
 

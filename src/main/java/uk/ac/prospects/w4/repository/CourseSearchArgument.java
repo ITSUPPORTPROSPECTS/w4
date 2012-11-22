@@ -1,9 +1,8 @@
 package uk.ac.prospects.w4.repository;
 
 /**
- * @author vasileiosl
- *         Date: 21/11/12
- *         Time: 16:02
+ * Holds the search criteria that are used for the elastic searches.
+ *
  */
 public class CourseSearchArgument {
 

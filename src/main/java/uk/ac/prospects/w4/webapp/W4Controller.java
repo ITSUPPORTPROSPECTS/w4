@@ -21,9 +21,7 @@ import java.text.ParseException;
 import java.util.List;
 
 /**
- * @author vasileiosl
- *         Date: 15/11/12
- *         Time: 11:12
+ * Controller class that handles the requests for the widget
  */
 @Controller
 public class W4Controller {
