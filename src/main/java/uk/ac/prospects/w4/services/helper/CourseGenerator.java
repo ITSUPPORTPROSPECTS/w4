@@ -270,17 +270,6 @@ public class CourseGenerator {
 		course.setTown(townExpr.evaluate(node));
 	}
 
-	private static boolean validateCourseStartDate(Node presentation, Date startDate) throws XPathExpressionException, ParseException {
-		if (startDate == null)
-			return false;
-		XPathExpression courseStartExpr = xpath.compile(XPATH_COURSE_PRESENTATION_START_DATE_FOR_JASON_RESULT);
-		String start = courseStartExpr.evaluate(presentation);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		int dataCompareResult = DateTimeComparator.getDateOnlyInstance().compare(dateFormat.parse(start), startDate);
-		if (dataCompareResult == 0) {
-			return true;
-		} else return false;
-	}
 
 	private static Date getDateFrom(Node presentationNode, String xpathDate) throws XPathExpressionException, ParseException {
 		XPathExpression courseDateExpr = xpath.compile(xpathDate);
