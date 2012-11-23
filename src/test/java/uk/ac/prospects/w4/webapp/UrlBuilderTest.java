@@ -58,4 +58,28 @@ public class UrlBuilderTest {
 		assertThat(paramString.contains("preserve=fromStartDate:2011-09-01,toStartDate:2013-01-01")
 						&& paramString.contains("preserve=toStartDate:2013-01-01,fromStartDate:2011-09-01"), CoreMatchers.equalTo(false));
 	}
+
+	@Test
+	public void testBuildCalendarURLNullValues(){
+		String paramString = UrlBuilder.buildCalendarURL(null, null, null, null, null, null);
+		assertThat(paramString, CoreMatchers.equalTo(""));
+	}
+
+	@Test
+	public void testBuildGeneralURLNullValues(){
+		String paramString = UrlBuilder.buildGeneralURL(null, null, null, null, null, null);
+		assertThat(paramString, CoreMatchers.equalTo(""));
+	}
+
+	@Test
+	public void testBuildCalendarURLForCalendarPageNullValues(){
+		String paramString = UrlBuilder.buildCalendarURLForCalendarPage(null, null, null, null, null);
+		assertThat(paramString, CoreMatchers.equalTo(""));
+	}
+
+	@Test
+	public void testBuildGeneralURLForCalendarPageNullValues(){
+		String paramString = UrlBuilder.buildGeneralURLForCalendarPage(null, null, null, null, null);
+		assertThat(paramString, CoreMatchers.equalTo(""));
+	}
 }

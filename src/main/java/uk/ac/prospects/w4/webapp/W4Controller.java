@@ -53,8 +53,8 @@ public class W4Controller {
 								@RequestParam(value = "provTitle", required = false) String provTitle) {
 
 		ModelAndView model = new ModelAndView(page);
-		model.addObject("generalUrl", UrlBuilder.buildGeneralURL(provId,provTitle, keyword, fromStartDate, toStartDate, courseTitle));
-		model.addObject("calendarUrl", UrlBuilder.buildCalendarURL(provId,provTitle, keyword, fromStartDate, toStartDate, courseTitle));
+		model.addObject("generalUrl", UrlBuilder.buildGeneralURL(provId, provTitle, keyword, fromStartDate, toStartDate, courseTitle));
+		model.addObject("calendarUrl", UrlBuilder.buildCalendarURL(provId, provTitle, keyword, fromStartDate, toStartDate, courseTitle));
 		model.addObject("msg", "Any page");
 		return model;
 	}
@@ -79,12 +79,16 @@ public class W4Controller {
 		argument.setCourseTitle(courseTitle);
 		argument.setProviderTitle(provTitle);
 
-		if (BooleanUtils.isTrue(excludeEmptyStartDates)){
+		if (BooleanUtils.isTrue(excludeEmptyStartDates)) {
 			argument.setExcludeEmptyStartDates(true);
 		}
 
 		String jsonResult = this.courseRepository.findAllCourses(argument);
-		List<Course> courses = CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date start = startDate != null ? dateFormat.parse(startDate) : null;
+		Date startFrom = fromStartDate != null ? dateFormat.parse(fromStartDate) : null;
+		Date startTo = toStartDate != null ? dateFormat.parse(toStartDate) : null;
+		List<Course> courses = CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult, start, startFrom, startTo);
 
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("courses", courses);
@@ -95,18 +99,16 @@ public class W4Controller {
 
 	@RequestMapping(value = "/map.htm", method = RequestMethod.GET)
 	public ModelAndView retrieveGoogleMapLocations(@RequestParam(value = "provid", required = false) String provId,
-															@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
-															@RequestParam(value = "toStartDate", required = false) String toStartDate,
-															@RequestParam(value = "keyword", required = false) String keyword,
-															@RequestParam(value = "startDate", required = false) String startDate,
-															@RequestParam(value = "courseTitle", required = false) String courseTitle,
-															@RequestParam(value = "provTitle", required = false) String provTitle) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
+												   @RequestParam(value = "fromStartDate", required = false) String fromStartDate,
+												   @RequestParam(value = "toStartDate", required = false) String toStartDate,
+												   @RequestParam(value = "keyword", required = false) String keyword,
+												   @RequestParam(value = "startDate", required = false) String startDate,
+												   @RequestParam(value = "courseTitle", required = false) String courseTitle,
+												   @RequestParam(value = "provTitle", required = false) String provTitle) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
 		ModelAndView model = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate, courseTitle, provTitle, false);
 		model.setViewName("map");
 		return model;
 	}
-
-
 
 
 	@RequestMapping(value = "/calendar.htm", method = RequestMethod.GET)
@@ -128,7 +130,7 @@ public class W4Controller {
 		toStartDate = getFormattedToStartDateFromCalendarLastDayOfTheMonth(calendar, FROM_TO_START_DATE_FORMAT);
 
 		//search for all the courses for this selected month
-		ModelAndView model = retrieveCourseProviderAndCourse(provId,fromStartDate, toStartDate, keyword, startDate,courseTitle, provTitle, false);
+		ModelAndView model = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate, courseTitle, provTitle, false);
 		model.setViewName("calendar");
 
 		CalendarValues selectedCalendar = new CalendarValues(calendar, 0);
@@ -143,7 +145,7 @@ public class W4Controller {
 
 		//construct the array that stores the dates available for calendar
 		int[] dates = new int[selectedCalendar.getMonthLastDay() + 1];
-		for(Course course : courses){
+		for (Course course : courses) {
 			Calendar courseCalendar = Calendar.getInstance();
 			courseCalendar.setTime(course.getStartDate());
 			if(courseCalendar.get(Calendar.MONTH)+1 == selectedCalendar.getMonth() && courseCalendar.get(Calendar.YEAR) == selectedCalendar.getYear()){
@@ -157,7 +159,7 @@ public class W4Controller {
 		//retrieve course list for specific selected date
 		fromStartDate = getFormattedDateFromCalendar(calendar, FROM_TO_START_DATE_FORMAT );
 		toStartDate = fromStartDate;
-		ModelAndView modelForSelectedDay = retrieveCourseProviderAndCourse(provId,fromStartDate, toStartDate, keyword, startDate,courseTitle, provTitle, false);
+		ModelAndView modelForSelectedDay = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate, courseTitle, provTitle, false);
 		List<Course> coursesForSelectedDay = (List<Course>) modelForSelectedDay.getModel().get("courses");
 
 		// add course list for specific selected date
@@ -179,7 +181,6 @@ public class W4Controller {
 		model.addObject("calendarUrl", UrlBuilder.buildCalendarURLForCalendarPage(provId, provTitle, keyword, courseTitle, preserve));
 		return model;
 	}
-
 
 	private String getFormattedFromStartDateFromCalendarFirstDayOfTheMonth(Calendar calendar, String dateFormatToExpect){
 		Calendar monthCalendar = Calendar.getInstance();
@@ -215,7 +216,7 @@ public class W4Controller {
 		return calendar;
 	}
 
-	public class CalendarValues implements Serializable{
+	public class CalendarValues implements Serializable {
 		private static final long serialVersionUID = -7723338363691165352L;
 		private int month;
 		private int year;
@@ -225,9 +226,9 @@ public class W4Controller {
 		private int monthFirstDayWeekday;
 		private String monthTitle;
 
-		final String [] MONTHS =
-		new String [] {"January", "February", "March", "April", "May",
-		"June", "July", "August", "September", "October", "November", "December"};
+		final String[] MONTHS =
+				new String[]{"January", "February", "March", "April", "May",
+						"June", "July", "August", "September", "October", "November", "December"};
 
 		public int getMonth() {
 			return month;
@@ -257,9 +258,9 @@ public class W4Controller {
 			return monthFirstDayWeekday;
 		}
 
-		CalendarValues(Calendar calendar, int addMonths){
+		CalendarValues(Calendar calendar, int addMonths) {
 			calendar.add(Calendar.MONTH, addMonths);
-			this.month = calendar.get(Calendar.MONTH)+1;
+			this.month = calendar.get(Calendar.MONTH) + 1;
 			this.year = calendar.get(Calendar.YEAR);
 			this.day = calendar.get(Calendar.DAY_OF_MONTH);
 			this.monthLastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -270,9 +271,9 @@ public class W4Controller {
 			monthCalendar.setTime(calendar.getTime());
 			Calendar firstDayOfTheMonth = DateUtils.truncate(monthCalendar, Calendar.MONTH);
 			int firstDayOfTheMonthWeekday = firstDayOfTheMonth.get(Calendar.DAY_OF_WEEK);
-			if(firstDayOfTheMonthWeekday==1){
+			if (firstDayOfTheMonthWeekday == 1) {
 				firstDayOfTheMonthWeekday = 7;
-			}else {
+			} else {
 				firstDayOfTheMonthWeekday--;
 			}
 			this.monthFirstDayWeekday = firstDayOfTheMonthWeekday;

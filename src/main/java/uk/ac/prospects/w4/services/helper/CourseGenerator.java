@@ -3,6 +3,7 @@ package uk.ac.prospects.w4.services.helper;
 import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
 import net.sf.json.xml.XMLSerializer;
+import org.joda.time.DateTimeComparator;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -23,6 +24,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,12 +57,11 @@ public class CourseGenerator {
 	private static final String XPATH_COURSE_PROVIDER_LOCATION_LATITUDE_FOR_JASON_RESULT = "provloc/lat";
 	//xpath for retrieving course presentations information
 	private static final String XPATH_COURSE_PRESENTATION_FOR_JASON_RESULT = "presentations/e";
-	private static final String XPATH_COURSE_PRESENTATION_END_DARE_FOR_JASON_RESULT = "end";
-	private static final String XPATH_COURSE_PRESENTATION_START_DARE_FOR_JASON_RESULT = "start";
+	private static final String XPATH_COURSE_PRESENTATION_END_DATE_FOR_JASON_RESULT = "end";
+	private static final String XPATH_COURSE_PRESENTATION_START_DATE_FOR_JASON_RESULT = "start";
 	private static final String XPATH_COURSE_PRESENTATION_POSTCODE_FOR_JASON_RESULT = "venue/postcode";
 	private static final String XPATH_COURSE_PRESENTATION_STREET_FOR_JASON_RESULT = "venue/street";
 	private static final String XPATH_COURSE_PRESENTATION_TOWN_FOR_JASON_RESULT = "venue/town";
-
 
 	private static final XPath xpath = XPathFactory.newInstance().newXPath();
 
@@ -70,18 +71,23 @@ public class CourseGenerator {
 
 	public static final String REGULAR_EXPRESSION_XML_NAME = "(:|[A-Z]|_|[a-z])(:|[A-Z]|_|[a-z]|-|\\.|[0-9])+";
 
+
 	/**
 	 * generate courses from json search results
 	 *
 	 * @param jsonSearchResult course json search result
+	 * @param startDate        the specific startDate from calendar
+	 * @param startFromDate    return course after this date
+	 * @param startToDate      return course before this date
 	 * @return a list of courses object
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws XPathExpressionException
 	 * @throws ParserConfigurationException
 	 */
-	public static List<Course> generateCoursesFromJsonSearchResult(String jsonSearchResult) throws IOException,
+	public static List<Course> generateCoursesFromJsonSearchResult(String jsonSearchResult, Date startDate, Date startFromDate, Date startToDate) throws IOException,
 			SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
+
 		List<Course> courses = new ArrayList<Course>();
 
 		if (!StringUtils.hasText(jsonSearchResult)) {
@@ -107,23 +113,21 @@ public class CourseGenerator {
 			XPathExpression invalidExpr = xpath.compile(XPATH_COURSE_DESCRIPTIONS_INVALID);
 			String invalidCoutent = invalidExpr.evaluate(courseNode);
 			if (StringUtils.hasText(invalidCoutent)) {
-				//System.out.println("invalid content is: "+invalidCoutent);
 				continue;
 			}
 
-			/*
-			NodeList invalidNodeList = (NodeList) invalidExpr.evaluate(courseNode, XPathConstants.NODESET);
-			if(invalidNodeList!=null&&invalidNodeList.getLength()!=0){
-				System.out.println("invalid number is: "+invalidNodeList.getLength());
-
-				continue;
-			}
-			*/
 			Course course = new Course();
 			addNodeInformationToCourse(courseNodeList.item(index), course);
 			NodeList presentations = getNubmerOfPresentations(courseNodeList.item(index));
 			for (int presentationIndex = 0; presentationIndex < presentations.getLength(); presentationIndex++) {
-
+				Date courseStartDate = getDateFrom(presentations.item(presentationIndex), XPATH_COURSE_PRESENTATION_START_DATE_FOR_JASON_RESULT);
+				if (courseStartDate != null && startDate != null && DateTimeComparator.getDateOnlyInstance().compare(courseStartDate, startDate) != 0) {
+					continue;
+				} else if (courseStartDate != null && startFromDate != null && startToDate != null && (
+						DateTimeComparator.getDateOnlyInstance().compare(startFromDate, courseStartDate) > 0
+								|| DateTimeComparator.getDateOnlyInstance().compare(startToDate, courseStartDate) < 0)) {
+					continue;
+				}
 				if (presentationIndex > 0) {
 					Course courseCopy = new Course();
 					courseCopy.copyCourse(course, presentationIndex);
@@ -242,7 +246,7 @@ public class CourseGenerator {
 	private static void addPresentationToCourse(Course course, Node node) throws XPathExpressionException, ParseException {
 		//XPathFactory xPathfactory = XPathFactory.newInstance();
 		//XPath xpath = xPathfactory.newXPath();
-		XPathExpression presentationExpr = xpath.compile(XPATH_COURSE_PRESENTATION_END_DARE_FOR_JASON_RESULT);
+		XPathExpression presentationExpr = xpath.compile(XPATH_COURSE_PRESENTATION_END_DATE_FOR_JASON_RESULT);
 
 		//retrieve course date information
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -250,7 +254,7 @@ public class CourseGenerator {
 		if (StringUtils.hasText(endDate))
 			course.setEndDate(dateFormat.parse(endDate));
 
-		XPathExpression courseStartExpr = xpath.compile(XPATH_COURSE_PRESENTATION_START_DARE_FOR_JASON_RESULT);
+		XPathExpression courseStartExpr = xpath.compile(XPATH_COURSE_PRESENTATION_START_DATE_FOR_JASON_RESULT);
 		String startDate = courseStartExpr.evaluate(node);
 
 		if (StringUtils.hasText(startDate))
@@ -267,4 +271,14 @@ public class CourseGenerator {
 		course.setTown(townExpr.evaluate(node));
 	}
 
+
+	private static Date getDateFrom(Node presentationNode, String xpathDate) throws XPathExpressionException, ParseException {
+		XPathExpression courseDateExpr = xpath.compile(xpathDate);
+		String date = courseDateExpr.evaluate(presentationNode);
+		if (!StringUtils.hasText(date)) {
+			return null;
+		}
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.parse(date);
+	}
 }

@@ -36,15 +36,16 @@ import static org.mockito.Mockito.*;
 public class W4ControllerTest {
 
 	@Test
-	public void testAnyPage(){
+	public void testAnyPage() {
 		W4Controller controller = new W4Controller();
 
-		assertThat((String)controller.anyPage("index", null, null, null, null, null, null, null).getModel().get("msg"), CoreMatchers.equalTo("Any page"));
+		assertThat((String) controller.anyPage("index", null, null, null, null, null, null, null).getModel().get("msg"), CoreMatchers.equalTo("Any page"));
 	}
 
 
 	/**
 	 * test for {@link W4Controller#retrieveGoogleMapLocations(String, String, String, String, String, String, String)}
+	 *
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws XPathExpressionException
@@ -72,13 +73,13 @@ public class W4ControllerTest {
 		List<Course> courses = new ArrayList<Course>();
 		courses.add(course1);
 		courses.add(course2);
-		when(CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult)).thenReturn(courses);
+		when(CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult, null, null, null)).thenReturn(courses);
 
 		controller.setCourseRepository(rep);
 		ModelAndView model = controller.retrieveGoogleMapLocations(null, null, null, null, null, null, null);
 		Mockito.verify(rep).findAllCourses(any(CourseSearchArgument.class));
 		PowerMockito.verifyStatic(times(1));
-    	CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult);
+		CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult, null, null, null);
 		Assert.assertEquals("map", model.getViewName());
 	}
 
