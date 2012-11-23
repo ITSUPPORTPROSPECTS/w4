@@ -76,9 +76,10 @@ public class CourseGenerator {
 	 * generate courses from json search results
 	 *
 	 * @param jsonSearchResult course json search result
-	 * @param startDate
-	 * @param startFromDate
-	 * @param startToDate      @return a list of courses object
+	 * @param startDate        the specific startDate from calendar
+	 * @param startFromDate    return course after this date
+	 * @param startToDate      return course before this date
+	 * @return a list of courses object
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws XPathExpressionException
@@ -122,9 +123,10 @@ public class CourseGenerator {
 				Date courseStartDate = getDateFrom(presentations.item(presentationIndex), XPATH_COURSE_PRESENTATION_START_DATE_FOR_JASON_RESULT);
 				if (courseStartDate != null && startDate != null && DateTimeComparator.getDateOnlyInstance().compare(courseStartDate, startDate) != 0) {
 					continue;
-				} else if (courseStartDate != null && startFromDate != null && startToDate != null && (
-						DateTimeComparator.getDateOnlyInstance().compare(startFromDate, courseStartDate) > 0
-								|| DateTimeComparator.getDateOnlyInstance().compare(startToDate, courseStartDate) < 0)) {
+				} else if (courseStartDate != null && startFromDate != null &&
+						DateTimeComparator.getDateOnlyInstance().compare(startFromDate, courseStartDate) > 0) {
+					continue;
+				} else if (courseStartDate != null && startToDate != null && DateTimeComparator.getDateOnlyInstance().compare(startToDate, courseStartDate) < 0) {
 					continue;
 				}
 				if (presentationIndex > 0) {
