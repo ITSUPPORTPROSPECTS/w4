@@ -39,12 +39,12 @@ public class W4ControllerTest {
 	public void testAnyPage(){
 		W4Controller controller = new W4Controller();
 
-		assertThat((String)controller.anyPage("index").getModel().get("msg"), CoreMatchers.equalTo("Any page"));
+		assertThat((String)controller.anyPage("index", null, null, null, null, null, null, null).getModel().get("msg"), CoreMatchers.equalTo("Any page"));
 	}
 
 
 	/**
-	 * test for {@link W4Controller#retrieveGoogleMapLocations(String, String, String, String, String, String)}
+	 * test for {@link W4Controller#retrieveGoogleMapLocations(String, String, String, String, String, String, String)}
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws XPathExpressionException
@@ -75,7 +75,7 @@ public class W4ControllerTest {
 		when(CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult)).thenReturn(courses);
 
 		controller.setCourseRepository(rep);
-		ModelAndView model = controller.retrieveGoogleMapLocations(null, null, null, null, null, null);
+		ModelAndView model = controller.retrieveGoogleMapLocations(null, null, null, null, null, null, null);
 		Mockito.verify(rep).findAllCourses(any(CourseSearchArgument.class));
 		PowerMockito.verifyStatic(times(1));
     	CourseGenerator.generateCoursesFromJsonSearchResult(jsonResult);

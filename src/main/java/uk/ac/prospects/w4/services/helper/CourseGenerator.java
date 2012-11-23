@@ -24,6 +24,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,9 +45,12 @@ public class CourseGenerator {
 	private static final String XPATH_COURSE_DESCRIPTION_FOR_JSON_RESULT = "description";
 	private static final String XPATH_COURSE_TITLE_FOT_JSON_RESULT = "title";
 	private static final String XPATH_COURSE_URL_FOR_JSON_RESULT = "url";
+	private static final String XPATH_COURSE_INVALID = "//invalid";
+	private static final String XPATH_COURSE_DESCRIPTIONS_INVALID = "descriptions/invalid";
 	// xpath for retrieving course provider information
 	private static final String XPATH_COURSE_PROVIDER_ID_FOR_JASON_RESULT = "provid";
 	private static final String XPATH_COURSE_PROVIDER_URL_FOR_JASON_RESULT = "provuri";
+	private static final String XPAPH_COURSE_PROVIDER_TITLE = "provtitle";
 	private static final String XPATH_COURSE_PROVIDER_LOCATION_LONGITUDE_FOR_JASON_RESULT = "provloc/lon";
 	private static final String XPATH_COURSE_PROVIDER_LOCATION_LATITUDE_FOR_JASON_RESULT = "provloc/lat";
 	//xpath for retrieving course presentations information
@@ -56,35 +61,64 @@ public class CourseGenerator {
 	private static final String XPATH_COURSE_PRESENTATION_STREET_FOR_JASON_RESULT = "venue/street";
 	private static final String XPATH_COURSE_PRESENTATION_TOWN_FOR_JASON_RESULT = "venue/town";
 
+
 	private static final XPath xpath = XPathFactory.newInstance().newXPath();
+
+
+	//w3 regular expression for validate xml element type
+	public static final String REGULAR_EXPRESSION_JSON_KEY_FOR_XML_TAG = "\"([^\"]*)\":";
+
+	public static final String REGULAR_EXPRESSION_XML_NAME = "(:|[A-Z]|_|[a-z])(:|[A-Z]|_|[a-z]|-|\\.|[0-9])+";
 
 	/**
 	 * generate courses from json search results
 	 *
-	 * @param jsonCSearchResult course json search result
+	 * @param jsonSearchResult course json search result
 	 * @return a list of courses object
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws XPathExpressionException
 	 * @throws ParserConfigurationException
 	 */
-	public static List<Course> generateCoursesFromJsonSearchResult(String jsonCSearchResult) throws IOException,
+	public static List<Course> generateCoursesFromJsonSearchResult(String jsonSearchResult) throws IOException,
 			SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
 		List<Course> courses = new ArrayList<Course>();
 
-		if (!StringUtils.hasText(jsonCSearchResult)) {
+		if (!StringUtils.hasText(jsonSearchResult)) {
 			//retrieve all courses
-			jsonCSearchResult = retrieveAllCoursesByJson();
+			jsonSearchResult = retrieveAllCoursesByJson();
 		}
 
 		//replace "": characters to "text":
-		jsonCSearchResult = jsonCSearchResult.replace(EMPTY_KEY, TEXT_KEY);
+		jsonSearchResult = jsonSearchResult.replace(EMPTY_KEY, TEXT_KEY);
+		//check & mark invalid jason key for generating xml element
+		jsonSearchResult = validateJsonSearchResult(jsonSearchResult);
+
 		XMLSerializer serializer = new XMLSerializer();
 		serializer.setTypeHintsEnabled(false);
-		JSON json = JSONSerializer.toJSON(jsonCSearchResult);
+		JSON json = JSONSerializer.toJSON(jsonSearchResult);
+
 		String xml = serializer.write(json);
+
 		NodeList courseNodeList = getCoursesNodeList(xml);
+		System.out.println("found " + courseNodeList.getLength() + " courses");
 		for (int index = 0; index < courseNodeList.getLength(); index++) {
+			Node courseNode = courseNodeList.item(index);
+			XPathExpression invalidExpr = xpath.compile(XPATH_COURSE_DESCRIPTIONS_INVALID);
+			String invalidCoutent = invalidExpr.evaluate(courseNode);
+			if (StringUtils.hasText(invalidCoutent)) {
+				//System.out.println("invalid content is: "+invalidCoutent);
+				continue;
+			}
+
+			/*
+			NodeList invalidNodeList = (NodeList) invalidExpr.evaluate(courseNode, XPathConstants.NODESET);
+			if(invalidNodeList!=null&&invalidNodeList.getLength()!=0){
+				System.out.println("invalid number is: "+invalidNodeList.getLength());
+
+				continue;
+			}
+			*/
 			Course course = new Course();
 			addNodeInformationToCourse(courseNodeList.item(index), course);
 			NodeList presentations = getNubmerOfPresentations(courseNodeList.item(index));
@@ -103,7 +137,35 @@ public class CourseGenerator {
 			}
 
 		}
+		System.out.println("found " + courses.size() + " valid courses");
 		return courses;
+	}
+
+	/**
+	 * find invalid json key and change it to string 'invalid'
+	 *
+	 * @param jsonSearchResult
+	 */
+	private static String validateJsonSearchResult(String jsonSearchResult) {
+		Pattern p = Pattern.compile(CourseGenerator.REGULAR_EXPRESSION_JSON_KEY_FOR_XML_TAG);
+		Matcher m = p.matcher(jsonSearchResult);
+
+		while (m.find()) {
+			String jsonKey = m.group();
+			String unboundedJsonKey = jsonKey.substring(1, jsonKey.length() - 2);
+			if (StringUtils.hasText(unboundedJsonKey)) {
+				Pattern p1 = Pattern.compile("(:|[A-Z]|_|[a-z])(:|[A-Z]|_|[a-z]|-|\\.|[0-9])+");
+				Matcher m1 = p1.matcher(unboundedJsonKey);
+				if (m1.find()) {
+					String matchElement = m1.group();
+					if (!matchElement.equals(unboundedJsonKey)) {
+						jsonSearchResult = jsonSearchResult.replace(unboundedJsonKey, "invalid");
+						System.out.println("incorrect key: " + unboundedJsonKey);
+					}
+				}
+			}
+		}
+		return jsonSearchResult;
 	}
 
 	private static String retrieveAllCoursesByJson() throws IOException {
@@ -164,6 +226,10 @@ public class CourseGenerator {
 
 		XPathExpression providerUrlExpr = xpath.compile(XPATH_COURSE_PROVIDER_URL_FOR_JASON_RESULT);
 		course.setProviderUrl(providerUrlExpr.evaluate(node));
+
+		XPathExpression providerTitleExpr = xpath.compile(XPAPH_COURSE_PROVIDER_TITLE);
+		course.setProviderTitle(providerTitleExpr.evaluate(node));
+
 	}
 
 	private static NodeList getNubmerOfPresentations(Node node) throws XPathExpressionException {

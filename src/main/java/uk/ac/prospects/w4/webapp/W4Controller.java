@@ -31,6 +31,8 @@ import java.util.List;
 @Controller
 public class W4Controller {
 
+	private static final int MAX_RESULTS = 200;
+
 	private CourseRepository courseRepository;
 
 	@Autowired
@@ -39,30 +41,41 @@ public class W4Controller {
 	}
 
 	@RequestMapping(value = "/{page}.htm", method = RequestMethod.GET)
-	public ModelAndView anyPage(@PathVariable String page) {
+	public ModelAndView anyPage(@PathVariable String page,
+								@RequestParam(value = "provid", required = false) String provId,
+								@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
+								@RequestParam(value = "toStartDate", required = false) String toStartDate,
+								@RequestParam(value = "keyword", required = false) String keyword,
+								@RequestParam(value = "startDate", required = false) String startDate,
+								@RequestParam(value = "courseTitle", required = false) String courseTitle,
+								@RequestParam(value = "provTitle", required = false) String provTitle) {
 
 		ModelAndView model = new ModelAndView(page);
+		model.addObject("generalUrl", UrlBuilder.buildGeneralURL(provId,provTitle, keyword, fromStartDate, toStartDate, courseTitle));
+				model.addObject("calendarUrl", UrlBuilder.buildCalendarURL(provId,provTitle, keyword));
 		model.addObject("msg", "Any page");
 		return model;
 	}
 
 	@RequestMapping(value = "/index.htm", method = RequestMethod.GET)
-	public ModelAndView retrieveCourseProviderAndCourse(	@RequestParam(value = "provid", required = false) String provId,
-															@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
-															@RequestParam(value = "toStartDate", required = false) String toStartDate,
-															@RequestParam(value = "keyword", required = false) String keyword,
-															@RequestParam(value = "startDate", required = false) String startDate,
-															@RequestParam(value = "courseTitle", required = false) String courseTitle,
-															Boolean excludeEmptyStartDates
+	public ModelAndView retrieveCourseProviderAndCourse(@RequestParam(value = "provid", required = false) String provId,
+														@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
+														@RequestParam(value = "toStartDate", required = false) String toStartDate,
+														@RequestParam(value = "keyword", required = false) String keyword,
+														@RequestParam(value = "startDate", required = false) String startDate,
+														@RequestParam(value = "courseTitle", required = false) String courseTitle,
+														@RequestParam(value = "provTitle", required = false) String provTitle,
+														Boolean excludeEmptyStartDates
 	) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
 		CourseSearchArgument argument = new CourseSearchArgument();
-		argument.setMaxResults(10);
+		argument.setMaxResults(MAX_RESULTS);
 		argument.setProviderId(provId);
 		argument.setFromStartDate(fromStartDate);
 		argument.setToStartDate(toStartDate);
 		argument.setKeyword(keyword);
 		argument.setStartDate(startDate);
 		argument.setCourseTitle(courseTitle);
+		argument.setProviderTitle(provTitle);
 
 		if (BooleanUtils.isTrue(excludeEmptyStartDates)){
 			argument.setExcludeEmptyStartDates(true);
@@ -73,6 +86,8 @@ public class W4Controller {
 
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("courses", courses);
+		model.addObject("generalUrl", UrlBuilder.buildGeneralURL(provId,provTitle, keyword, fromStartDate, toStartDate, courseTitle));
+		model.addObject("calendarUrl", UrlBuilder.buildCalendarURL(provId,provTitle, keyword));
 		return model;
 	}
 
@@ -82,8 +97,9 @@ public class W4Controller {
 															@RequestParam(value = "toStartDate", required = false) String toStartDate,
 															@RequestParam(value = "keyword", required = false) String keyword,
 															@RequestParam(value = "startDate", required = false) String startDate,
-															@RequestParam(value = "courseTitle", required = false) String courseTitle) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
-		ModelAndView model = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate, courseTitle, false);
+															@RequestParam(value = "courseTitle", required = false) String courseTitle,
+															@RequestParam(value = "provTitle", required = false) String provTitle) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
+		ModelAndView model = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate, courseTitle, provTitle, false);
 		model.setViewName("map");
 		return model;
 	}
@@ -98,6 +114,7 @@ public class W4Controller {
 															@RequestParam(value = "keyword", required = false) String keyword,
 															@RequestParam(value = "startDate", required = false) String startDate,
 															@RequestParam(value = "courseTitle", required = false) String courseTitle,
+															@RequestParam(value = "provTitle", required = false) String provTitle,
 															@RequestParam(value = "day", required=false) Integer day,
 															@RequestParam(value = "month", required=false) Integer month,
 															@RequestParam(value = "year", required=false) Integer year) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
@@ -151,7 +168,7 @@ public class W4Controller {
 	}
 */
 
-		ModelAndView model = retrieveCourseProviderAndCourse(provId,fromStartDate, toStartDate, keyword, startDate,courseTitle, false);
+		ModelAndView model = retrieveCourseProviderAndCourse(provId,fromStartDate, toStartDate, keyword, startDate,courseTitle, provTitle, false);
 		model.setViewName("calendar");
 		/*Calendar todaysCalendar = Calendar.getInstance();
 			todaysCalendar.setTime(new Date());
@@ -211,7 +228,7 @@ public class W4Controller {
 		fromStartDate = format.format(calendar.getTime());
 		System.out.println("fromStartDateForDay="+ fromStartDate);
 		toStartDate = fromStartDate;
-		ModelAndView modelForSelectedDay = retrieveCourseProviderAndCourse(provId,fromStartDate, toStartDate, keyword, startDate,courseTitle, false);
+		ModelAndView modelForSelectedDay = retrieveCourseProviderAndCourse(provId,fromStartDate, toStartDate, keyword, startDate,courseTitle, provTitle, false);
 		List<Course> coursesForSelectedDay = (List<Course>) modelForSelectedDay.getModel().get("courses");
 
 		model.addObject("courses", coursesForSelectedDay);
