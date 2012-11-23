@@ -1,5 +1,11 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%pageContext.setAttribute("newLineChar", "\n"); %>
+<%@page contentType="text/html;charset=UTF-8" language="java" %>
+
+<c:set var="selectedPage" value="Map" />
+
 <%@include file="inc/header_inc.jsp" %>
 
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCKX3mnODZA8Teay3iRZEj-fSr7eo7lzGI&sensor=false&region=GB"></script>
@@ -13,10 +19,10 @@
 					[
 					<c:forEach var="course" items="${courses}" varStatus="status">
 					{
-						'name': '${course.title}',
-						'url' : '${course.url}',
-						'address': '${course.street} ${course.town} ${course.postcode}',
-                    	'coords' : '${course.providerLatitude}, ${course.providerLongitude}'
+						'name': "${fn:replace(course.title, newLineChar, "")}",
+						'url' : "${course.url}",
+						'address': "${course.street} ${course.town} ${course.postcode}",
+                    	'coords' : "${course.providerLatitude}, ${course.providerLongitude}"
 					}
 					<c:if test="${!status.last}">,</c:if>
 					</c:forEach>
@@ -68,41 +74,48 @@
     <div id="map_canvas" style="width:100%; height:250px;"></div>
 
 	<h2 class="margtop">CPD courses by region</h2>
-	<%--ML: include index.jsp instead the code below ?!!--%>
+	
 	<ul class="structure_1">
-
-	    <c:forEach var="course" items="${courses}" varStatus="status">
-
-	        <li class="clearfix">
-	            <div class="left">
-	                <div class="primary item">
-	                    <a href="${course.url}">${course.title}</a>
-	                </div>
-	                <div class="secondary item">
-	                        ${course.providerTitle}
-	                </div>
-	                <div class="tertiary item">
-	                        ${course.town}
-	                </div>
-	            </div>
-	            <div class="right">
-	                <div class="item_heading">
-	                    Start date
-	                </div>
-	                <div class="item">
-	                	<c:choose>
-		                	<c:when test="{not empty course.startDate}">
-		                		${course.startDate}
-		                	</c:when>
-		                	<c:otherwise>
-		                		See course details
-		                	</c:otherwise>
-	                	</c:choose>
-	                </div>
-	            </div>
-	        </li>
-
-	    </c:forEach>
+		<c:choose>
+			<c:when test="${not empty courses}">
+			    <c:forEach var="course" items="${courses}" varStatus="status">
+			        <li class="clearfix">
+			            <div class="left">
+			                <div class="primary item">
+			                    <a href="${course.url}">${course.title}</a>
+			                </div>
+			                <div class="secondary item">
+		                    	${course.providerTitle}	                    
+			                </div>
+			                <div class="tertiary item">
+			                    ${course.town}
+			                </div>
+			            </div>
+			            <div class="right">
+			                <div class="item_heading">
+			                    Start date
+			                </div>
+			                <div class="item">
+			                	<c:choose>
+				                	<c:when test="${course.startDate != null}">
+				                		<fmt:formatDate pattern="yyyy-MM-dd" value="${course.startDate}"/>
+				                	</c:when>
+				                	<c:otherwise>
+				                		<p class="chilled">See course details</p>
+				                	</c:otherwise>
+			                	</c:choose>
+			                </div>
+			            </div>
+			        </li>
+			    </c:forEach>		
+			</c:when>
+			<c:otherwise>
+				<li class="clearfix">
+					<p class="centertext chilled">No results found</p>
+				</li>
+			</c:otherwise>
+		</c:choose>
 	</ul>
+	
 
 <%@include file="inc/footer_inc.jsp" %>
