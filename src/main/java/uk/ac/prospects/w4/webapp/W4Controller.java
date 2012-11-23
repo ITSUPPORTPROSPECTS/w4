@@ -130,20 +130,40 @@ public class W4Controller {
 		toStartDate = getFormattedToStartDateFromCalendarLastDayOfTheMonth(calendar, FROM_TO_START_DATE_FORMAT);
 
 		//search for all the courses for this selected month
-		ModelAndView model = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate, courseTitle, provTitle, false);
-		model.setViewName("calendar");
-
+		List<Course> courses  = (List<Course>)retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate, courseTitle, provTitle, false).getModel().get("courses");
 		CalendarValues selectedCalendar = new CalendarValues(calendar, 0);
+		int [] dates = getTheArrayOfDatesThatHaveAtLeastOneCourseForSelectedCalendar(selectedCalendar, courses);
+
+
+		ModelAndView model = new ModelAndView("calendar");
 		model.addObject("selectedCalendar", selectedCalendar);
+		buildAndAddCalendarsToModelFromCurrentCalendar(model, calendar);
+		model.addObject("dates", dates);
 
-		Calendar todays = Calendar.getInstance();
-		todays.setTime(new Date());
-		CalendarValues todaysCalendar = new CalendarValues(todays, 0);
-		model.addObject("todaysCalendar", todaysCalendar);
 
-		List<Course> courses = (List<Course>) model.getModel().get("courses");
+		//retrieve course list for specific selected date
+		fromStartDate = getFormattedDateFromCalendar(calendar, FROM_TO_START_DATE_FORMAT );
+		toStartDate = fromStartDate;
+		List<Course> coursesForSelectedDay = (List<Course>) retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate, courseTitle, provTitle, false).getModel().get("courses");
 
-		//construct the array that stores the dates available for calendar
+		// add course list for specific selected date
+		model.addObject("courses", coursesForSelectedDay);
+
+		model.addObject("generalUrl", UrlBuilder.buildGeneralURLForCalendarPage(provId, provTitle, keyword, courseTitle, preserve));
+		model.addObject("calendarUrl", UrlBuilder.buildCalendarURLForCalendarPage(provId, provTitle, keyword, courseTitle, preserve));
+		return model;
+	}
+
+
+	/**
+	 * populates the array that holds 0/1 values in a cell that corresponds to the each day of the month
+	 * 1 means there is at least one course with this start date , 0 means no courses for this date
+	 * @param selectedCalendar {@code CalendarValues} selected calendar
+	 * @param courses - list of all the courses for this month
+	 * @return array of 1/0 of course availability for the each month day
+	 * @author malvinel
+	 */
+	private int[] getTheArrayOfDatesThatHaveAtLeastOneCourseForSelectedCalendar(CalendarValues selectedCalendar, List<Course> courses){
 		int[] dates = new int[selectedCalendar.getMonthLastDay() + 1];
 		for (Course course : courses) {
 			Calendar courseCalendar = Calendar.getInstance();
@@ -153,17 +173,21 @@ public class W4Controller {
 				dates[dayNumber] = 1;
 			}
 		}
-		model.addObject("dates", dates);
+		return dates;
+	}
 
+	/**
+	 * builds the necessary {@code CalendarValues} objects for next month, previous month and also current/todays month
+	 * @param model - model
+	 * @param calendar - currently selected calendar month
+	 * @author malvinel
+	 */
+	private void buildAndAddCalendarsToModelFromCurrentCalendar(ModelAndView model, Calendar calendar){
+		Calendar todays = Calendar.getInstance();
+		todays.setTime(new Date());
+		CalendarValues todaysCalendar = new CalendarValues(todays, 0);
+		model.addObject("todaysCalendar", todaysCalendar);
 
-		//retrieve course list for specific selected date
-		fromStartDate = getFormattedDateFromCalendar(calendar, FROM_TO_START_DATE_FORMAT );
-		toStartDate = fromStartDate;
-		ModelAndView modelForSelectedDay = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate, courseTitle, provTitle, false);
-		List<Course> coursesForSelectedDay = (List<Course>) modelForSelectedDay.getModel().get("courses");
-
-		// add course list for specific selected date
-		model.addObject("courses", coursesForSelectedDay);
 
 		//previous month calendar
 		Calendar previousMonthCalendar = Calendar.getInstance();
@@ -176,12 +200,16 @@ public class W4Controller {
 		nextMonthCalendar.setTime(calendar.getTime());
 		CalendarValues nextCalendar = new CalendarValues(nextMonthCalendar, 1);
 		model.addObject("nextCalendar", nextCalendar);
-
-		model.addObject("generalUrl", UrlBuilder.buildGeneralURLForCalendarPage(provId, provTitle, keyword, courseTitle, preserve));
-		model.addObject("calendarUrl", UrlBuilder.buildCalendarURLForCalendarPage(provId, provTitle, keyword, courseTitle, preserve));
-		return model;
 	}
 
+	/**
+	* Gets the formatted date from the calendar gets the current month and the last day of the month and
+	 * formats it to the {@code dateFormatToExpect} pattern
+	 * @param calendar {@code Calendar}
+	 * @param dateFormatToExpect {@code String} - date format pattern
+	 * @return last day of the month formatted date
+	 * @author malvinel
+	 */
 	private String getFormattedFromStartDateFromCalendarFirstDayOfTheMonth(Calendar calendar, String dateFormatToExpect){
 		Calendar monthCalendar = Calendar.getInstance();
 		monthCalendar.setTime(calendar.getTime());
@@ -189,6 +217,14 @@ public class W4Controller {
 		return getFormattedDateFromCalendar(monthCalendar, dateFormatToExpect);
 	}
 
+	/**
+	 * Gets the formatted date from the calendar gets the current month and the first day of the month and
+	 * formats it to the {@code dateFormatToExpect} pattern
+	 * @param calendar {@code Calendar}
+	 * @param dateFormatToExpect {@code String} - date format pattern
+	 * @return first day of the month formatted date
+	 * @author malvinel
+	 */
 	private String getFormattedToStartDateFromCalendarLastDayOfTheMonth(Calendar calendar, String dateFormatToExpect){
 		Calendar monthCalendar = Calendar.getInstance();
 		monthCalendar.setTime(calendar.getTime());
@@ -196,13 +232,28 @@ public class W4Controller {
 		return getFormattedDateFromCalendar(monthCalendar, dateFormatToExpect);
 	}
 
+	/**
+	 * Gets the formatted string date from the calendar date according to the {@code dateFormatToExpect} format
+	 * @param calendar - {@code Calendar}
+	 * @param dateFormatToExpect {@code String} - format pattern
+	 * @return Date formatted String
+	 * @author malvinel
+	 */
 	private String getFormattedDateFromCalendar(Calendar calendar, String dateFormatToExpect){
 		SimpleDateFormat format = new SimpleDateFormat(dateFormatToExpect);
 		return format.format(calendar.getTime());
 	}
 
 
-
+	/**
+	 * Creates the currently selected calendar month from the the request params provided,
+	 * if none are specified the current todays month is used
+	 * @param year - year
+	 * @param month - month [human readable format -> january =1]
+	 * @param day - day
+	 * @return Calendar object that holds the currently selected calendar month
+	 * @author malvinel
+	 */
 	private Calendar createSelectedMonthCalendarFromValuesSetOrIfNotSetFromTodaysDate(Integer year, Integer month, Integer day){
 		if(day==null || month== null || year==null){
 			Calendar todaysCalendar = Calendar.getInstance();
@@ -216,6 +267,8 @@ public class W4Controller {
 		return calendar;
 	}
 
+
+	//TODO ML: any better name?! anyone?
 	public class CalendarValues implements Serializable {
 		private static final long serialVersionUID = -7723338363691165352L;
 		private int month;
