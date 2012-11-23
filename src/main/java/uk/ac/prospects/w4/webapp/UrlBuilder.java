@@ -36,6 +36,8 @@ public class UrlBuilder {
 
 		if ((sb.length() > 0) && (calendarSb.length() > 0)){
 			sb.append("&");
+		}
+		if (calendarSb.length() > 0) {
 			sb.append("preserve=");
 			sb.append(calendarSb);
 		}
