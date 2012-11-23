@@ -35,6 +35,8 @@ public class W4Controller {
 
 	private CourseRepository courseRepository;
 
+	private static final String FROM_TO_START_DATE_FORMAT = "yyyy-MM-dd";
+
 	@Autowired
 	public void setCourseRepository(CourseRepository courseRepository) {
 		this.courseRepository = courseRepository;
@@ -120,26 +122,10 @@ public class W4Controller {
 															@RequestParam(value = "month", required=false) Integer month,
 															@RequestParam(value = "year", required=false) Integer year) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
 
-	//if no parameters set - set todays date/month/year
-		if(day==null || month== null || year==null){
-			Calendar todaysCalendar = Calendar.getInstance();
-			todaysCalendar.setTime(new Date());
-			day=todaysCalendar.get(Calendar.DAY_OF_MONTH);
-			month=todaysCalendar.get(Calendar.MONTH) + 1;
-			year = todaysCalendar.get(Calendar.YEAR);
-		}
+		Calendar calendar = createSelectedMonthCalendarFromValuesSetOrIfNotSetFromTodaysDate(year, month, day);
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(year,month-1, day);
-
-		Calendar monthCalendar = Calendar.getInstance();
-		monthCalendar.set(year,month-1, day);
-		monthCalendar.set(Calendar.DAY_OF_MONTH, monthCalendar.getActualMinimum(Calendar.DAY_OF_MONTH) );
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		fromStartDate = format.format(monthCalendar.getTime());
-
-		monthCalendar.set(Calendar.DAY_OF_MONTH, monthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-		toStartDate = format.format(monthCalendar.getTime());
+		fromStartDate = getFormattedFromStartDateFromCalendarFirstDayOfTheMonth(calendar, FROM_TO_START_DATE_FORMAT);
+		toStartDate = getFormattedToStartDateFromCalendarLastDayOfTheMonth(calendar, FROM_TO_START_DATE_FORMAT);
 
 		//search for all the courses for this selected month
 		ModelAndView model = retrieveCourseProviderAndCourse(provId,fromStartDate, toStartDate, keyword, startDate,courseTitle, provTitle, false);
@@ -160,7 +146,7 @@ public class W4Controller {
 		for(Course course : courses){
 			Calendar courseCalendar = Calendar.getInstance();
 			courseCalendar.setTime(course.getStartDate());
-			if(courseCalendar.get(Calendar.MONTH)+1 == month && courseCalendar.get(Calendar.YEAR) == year){
+			if(courseCalendar.get(Calendar.MONTH)+1 == selectedCalendar.getMonth() && courseCalendar.get(Calendar.YEAR) == selectedCalendar.getYear()){
 				int dayNumber = courseCalendar.get(Calendar.DAY_OF_MONTH);
 				dates[dayNumber] = 1;
 			}
@@ -169,7 +155,7 @@ public class W4Controller {
 
 
 		//retrieve course list for specific selected date
-		fromStartDate = format.format(calendar.getTime());
+		fromStartDate = getFormattedDateFromCalendar(calendar, FROM_TO_START_DATE_FORMAT );
 		toStartDate = fromStartDate;
 		ModelAndView modelForSelectedDay = retrieveCourseProviderAndCourse(provId,fromStartDate, toStartDate, keyword, startDate,courseTitle, provTitle, false);
 		List<Course> coursesForSelectedDay = (List<Course>) modelForSelectedDay.getModel().get("courses");
@@ -192,6 +178,41 @@ public class W4Controller {
 		model.addObject("generalUrl", UrlBuilder.buildGeneralURLForCalendarPage(provId, provTitle, keyword, courseTitle, preserve));
 		model.addObject("calendarUrl", UrlBuilder.buildCalendarURLForCalendarPage(provId, provTitle, keyword, courseTitle, preserve));
 		return model;
+	}
+
+
+	private String getFormattedFromStartDateFromCalendarFirstDayOfTheMonth(Calendar calendar, String dateFormatToExpect){
+		Calendar monthCalendar = Calendar.getInstance();
+		monthCalendar.setTime(calendar.getTime());
+		monthCalendar.set(Calendar.DAY_OF_MONTH, monthCalendar.getActualMinimum(Calendar.DAY_OF_MONTH) );
+		return getFormattedDateFromCalendar(monthCalendar, dateFormatToExpect);
+	}
+
+	private String getFormattedToStartDateFromCalendarLastDayOfTheMonth(Calendar calendar, String dateFormatToExpect){
+		Calendar monthCalendar = Calendar.getInstance();
+		monthCalendar.setTime(calendar.getTime());
+		monthCalendar.set(Calendar.DAY_OF_MONTH, monthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		return getFormattedDateFromCalendar(monthCalendar, dateFormatToExpect);
+	}
+
+	private String getFormattedDateFromCalendar(Calendar calendar, String dateFormatToExpect){
+		SimpleDateFormat format = new SimpleDateFormat(dateFormatToExpect);
+		return format.format(calendar.getTime());
+	}
+
+
+
+	private Calendar createSelectedMonthCalendarFromValuesSetOrIfNotSetFromTodaysDate(Integer year, Integer month, Integer day){
+		if(day==null || month== null || year==null){
+			Calendar todaysCalendar = Calendar.getInstance();
+			todaysCalendar.setTime(new Date());
+			day=todaysCalendar.get(Calendar.DAY_OF_MONTH);
+			month=todaysCalendar.get(Calendar.MONTH) + 1;
+			year = todaysCalendar.get(Calendar.YEAR);
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(year,month-1, day);
+		return calendar;
 	}
 
 	public class CalendarValues implements Serializable{
