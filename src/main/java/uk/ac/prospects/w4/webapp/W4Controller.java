@@ -1,6 +1,7 @@
 package uk.ac.prospects.w4.webapp;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +18,11 @@ import uk.ac.prospects.w4.services.helper.CourseGenerator;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -98,4 +103,159 @@ public class W4Controller {
 		model.setViewName("map");
 		return model;
 	}
+
+
+
+
+	@RequestMapping(value = "/calendar.htm", method = RequestMethod.GET)
+	public ModelAndView retriveCalendar(@RequestParam(value = "provid", required = false) String provId,
+															@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
+															@RequestParam(value = "toStartDate", required = false) String toStartDate,
+															@RequestParam(value = "keyword", required = false) String keyword,
+															@RequestParam(value = "startDate", required = false) String startDate,
+															@RequestParam(value = "courseTitle", required = false) String courseTitle,
+															@RequestParam(value = "provTitle", required = false) String provTitle,
+															@RequestParam(value = "preserve", required = false) String preserve,
+															@RequestParam(value = "day", required=false) Integer day,
+															@RequestParam(value = "month", required=false) Integer month,
+															@RequestParam(value = "year", required=false) Integer year) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
+
+	//if no parameters set - set todays date/month/year
+		if(day==null || month== null || year==null){
+			Calendar todaysCalendar = Calendar.getInstance();
+			todaysCalendar.setTime(new Date());
+			day=todaysCalendar.get(Calendar.DAY_OF_MONTH);
+			month=todaysCalendar.get(Calendar.MONTH) + 1;
+			year = todaysCalendar.get(Calendar.YEAR);
+		}
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(year,month-1, day);
+
+		Calendar monthCalendar = Calendar.getInstance();
+		monthCalendar.set(year,month-1, day);
+		monthCalendar.set(Calendar.DAY_OF_MONTH, monthCalendar.getActualMinimum(Calendar.DAY_OF_MONTH) );
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		fromStartDate = format.format(monthCalendar.getTime());
+
+		monthCalendar.set(Calendar.DAY_OF_MONTH, monthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		toStartDate = format.format(monthCalendar.getTime());
+
+		//search for all the courses for this selected month
+		ModelAndView model = retrieveCourseProviderAndCourse(provId,fromStartDate, toStartDate, keyword, startDate,courseTitle, provTitle, false);
+		model.setViewName("calendar");
+
+		CalendarValues selectedCalendar = new CalendarValues(calendar, 0);
+		model.addObject("selectedCalendar", selectedCalendar);
+
+		Calendar todays = Calendar.getInstance();
+		todays.setTime(new Date());
+		CalendarValues todaysCalendar = new CalendarValues(todays, 0);
+		model.addObject("todaysCalendar", todaysCalendar);
+
+		List<Course> courses = (List<Course>) model.getModel().get("courses");
+
+		//construct the array that stores the dates available for calendar
+		int[] dates = new int[selectedCalendar.getMonthLastDay() + 1];
+		for(Course course : courses){
+			Calendar courseCalendar = Calendar.getInstance();
+			courseCalendar.setTime(course.getStartDate());
+			if(courseCalendar.get(Calendar.MONTH)+1 == month && courseCalendar.get(Calendar.YEAR) == year){
+				int dayNumber = courseCalendar.get(Calendar.DAY_OF_MONTH);
+				dates[dayNumber] = 1;
+			}
+		}
+		model.addObject("dates", dates);
+
+
+		//retrieve course list for specific selected date
+		fromStartDate = format.format(calendar.getTime());
+		toStartDate = fromStartDate;
+		ModelAndView modelForSelectedDay = retrieveCourseProviderAndCourse(provId,fromStartDate, toStartDate, keyword, startDate,courseTitle, provTitle, false);
+		List<Course> coursesForSelectedDay = (List<Course>) modelForSelectedDay.getModel().get("courses");
+
+		// add course list for specific selected date
+		model.addObject("courses", coursesForSelectedDay);
+
+		//previous month calendar
+		Calendar previousMonthCalendar = Calendar.getInstance();
+		previousMonthCalendar.setTime(calendar.getTime());
+		CalendarValues previousCalendar = new CalendarValues(previousMonthCalendar, -1);
+		model.addObject("previousCalendar", previousCalendar);
+
+		//next month calendar
+		Calendar nextMonthCalendar = Calendar.getInstance();
+		nextMonthCalendar.setTime(calendar.getTime());
+		CalendarValues nextCalendar = new CalendarValues(nextMonthCalendar, 1);
+		model.addObject("nextCalendar", nextCalendar);
+
+		model.addObject("generalUrl", UrlBuilder.buildGeneralURLForCalendarPage(provId, provTitle, keyword, courseTitle, preserve));
+		model.addObject("calendarUrl", UrlBuilder.buildCalendarURLForCalendarPage(provId, provTitle, keyword, courseTitle, preserve));
+		return model;
+	}
+
+	public class CalendarValues implements Serializable{
+		private static final long serialVersionUID = -7723338363691165352L;
+		private int month;
+		private int year;
+		private int day;
+		private int monthLastDay;
+		private int monthFirstDay;
+		private int monthFirstDayWeekday;
+		private String monthTitle;
+
+		final String [] MONTHS =
+		new String [] {"January", "February", "March", "April", "May",
+		"June", "July", "August", "September", "October", "November", "December"};
+
+		public int getMonth() {
+			return month;
+		}
+
+		public int getYear() {
+			return year;
+		}
+
+		public int getMonthLastDay() {
+			return monthLastDay;
+		}
+
+		public int getMonthFirstDay() {
+			return monthFirstDay;
+		}
+
+		public String getMonthTitle() {
+			return monthTitle;
+		}
+
+		public int getDay() {
+			return day;
+		}
+
+		public int getMonthFirstDayWeekday() {
+			return monthFirstDayWeekday;
+		}
+
+		CalendarValues(Calendar calendar, int addMonths){
+			calendar.add(Calendar.MONTH, addMonths);
+			this.month = calendar.get(Calendar.MONTH)+1;
+			this.year = calendar.get(Calendar.YEAR);
+			this.day = calendar.get(Calendar.DAY_OF_MONTH);
+			this.monthLastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+			this.monthFirstDay = calendar.getActualMinimum(Calendar.DAY_OF_MONTH);
+			this.monthTitle = MONTHS[calendar.get(Calendar.MONTH)];
+
+			Calendar monthCalendar = Calendar.getInstance();
+			monthCalendar.setTime(calendar.getTime());
+			Calendar firstDayOfTheMonth = DateUtils.truncate(monthCalendar, Calendar.MONTH);
+			int firstDayOfTheMonthWeekday = firstDayOfTheMonth.get(Calendar.DAY_OF_WEEK);
+			if(firstDayOfTheMonthWeekday==1){
+				firstDayOfTheMonthWeekday = 7;
+			}else {
+				firstDayOfTheMonthWeekday--;
+			}
+			this.monthFirstDayWeekday = firstDayOfTheMonthWeekday;
+		}
+	}
+
 }
