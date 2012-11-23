@@ -99,8 +99,8 @@ public class UrlBuilder {
 			}
 			if (sb.length() > 0){
 				sb.append("&");
-				sb.append(calendarSb);
 			}
+			sb.append(calendarSb);
 		}
 
 
