@@ -173,7 +173,7 @@ public class W4Controller {
 		/*Calendar todaysCalendar = Calendar.getInstance();
 			todaysCalendar.setTime(new Date());
 		*/
-		CalendarValues selectedCalendar = new CalendarValues(calendar);
+		CalendarValues selectedCalendar = new CalendarValues(calendar, 0);
 
 		model.addObject("selectedCalendar", selectedCalendar);
 		/*model.addObject("selectedMonthTitle", MONTHS[calendar.get(Calendar.MONTH)]);
@@ -186,7 +186,7 @@ public class W4Controller {
 		Calendar todays = Calendar.getInstance();
 		todays.setTime(new Date());
 
-		CalendarValues todaysCalendar = new CalendarValues(todays);
+		CalendarValues todaysCalendar = new CalendarValues(todays, 0);
 		model.addObject("todaysCalendar", todaysCalendar);
 
 		/*model.addObject("todaysMonth", todaysCalendar.get(Calendar.MONTH) + 1);
@@ -236,21 +236,27 @@ public class W4Controller {
 
 		Calendar previousMonthCalendar = Calendar.getInstance();
 		previousMonthCalendar.setTime(calendar.getTime());
-		previousMonthCalendar.add(Calendar.MONTH, -1);
+		//previousMonthCalendar.add(Calendar.MONTH, -1);
 
-		model.addObject("previousMonth", previousMonthCalendar.get(Calendar.MONTH)+1);
+		CalendarValues previousCalendar = new CalendarValues(previousMonthCalendar, -1);
+		model.addObject("previousCalendar", previousCalendar);
+
+		/*model.addObject("previousMonth", previousMonthCalendar.get(Calendar.MONTH)+1);
 		model.addObject("previousMonthYear", previousMonthCalendar.get(Calendar.YEAR));
 		model.addObject("previousMonthLastDay", previousMonthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		model.addObject("previousMonthTitle", MONTHS[previousMonthCalendar.get(Calendar.MONTH)]);
-
+*/
 		Calendar nextMonthCalendar = Calendar.getInstance();
 		nextMonthCalendar.setTime(calendar.getTime());
-		nextMonthCalendar.add(Calendar.MONTH, 1);
-		model.addObject("nextMonth", nextMonthCalendar.get(Calendar.MONTH)+1);
+		//nextMonthCalendar.add(Calendar.MONTH, 1);
+		CalendarValues nextCalendar = new CalendarValues(nextMonthCalendar, 1);
+		model.addObject("nextCalendar", nextCalendar);
+
+		/*model.addObject("nextMonth", nextMonthCalendar.get(Calendar.MONTH)+1);
 		model.addObject("nextMonthYear", nextMonthCalendar.get(Calendar.YEAR));
 		model.addObject("nextMonthFirstDay",nextMonthCalendar.getActualMinimum(Calendar.DAY_OF_MONTH));
 		model.addObject("nextMonthTitle", MONTHS[nextMonthCalendar.get(Calendar.MONTH)]);
-
+*/
 
 
 
@@ -295,13 +301,25 @@ public class W4Controller {
 			return day;
 		}
 
-		CalendarValues(Calendar calendar){
+		CalendarValues(Calendar calendar, int addMonths){
+			calendar.add(Calendar.MONTH, addMonths);
 			this.month = calendar.get(Calendar.MONTH)+1;
 			this.year = calendar.get(Calendar.YEAR);
 			this.day = calendar.get(Calendar.DAY_OF_MONTH);
 			this.monthLastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 			this.monthFirstDay = calendar.getActualMinimum(Calendar.DAY_OF_MONTH);
 			this.monthTitle = MONTHS[calendar.get(Calendar.MONTH)];
+		}
+
+		public boolean isAfterToday(){
+			Calendar todaysCalendar = Calendar.getInstance();
+			todaysCalendar.setTime(new Date());
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(year, month - 1, day);
+
+			return calendar.after(todaysCalendar);
+
 		}
 		
 	}

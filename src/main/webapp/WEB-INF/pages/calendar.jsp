@@ -8,10 +8,10 @@
 <%@include file="inc/header_inc.jsp" %>
 
 	<div class="calendar_nav">
-		<a href="/calendar.htm?month=${previousMonth}&amp;year=${previousMonthYear}&amp;day=${previousMonthLastDay}" title="Events in October 2012" class="prev_month prev plainlink">&nbsp;<span class="offscreen">Events in October 2012</span></a>
+		<a href="/calendar.htm?month=${previousCalendar.month}&amp;year=${previousCalendar.year}&amp;day=${previousCalendar.monthLastDay}" title="Events in ${previousCalendar.monthTitle} ${previousCalendar.year}" class="prev_month prev plainlink">&nbsp;<span class="offscreen">Events in ${previousCalendar.monthTitle} ${previousCalendar.year}</span></a>
 		<h2>
 			<c:out value="${selectedCalendar.monthTitle}"/> ${selectedCalendar.year}
-		</h2><a href="/calendar.htm?month=${nextMonth}&amp;year=${nextMonthYear}&amp;day=${nextMonthFirstDay}" title="Events in December 2012" class="next_month next plainlink">&nbsp;<span class="offscreen">Events in December 2012</span></a>
+		</h2><a href="/calendar.htm?month=${nextCalendar.month}&amp;year=${nextCalendar.year}&amp;day=${nextCalendar.monthFirstDay}" title="Events in December 2012" class="next_month next plainlink">&nbsp;<span class="offscreen">Events in ${nextCalendar.monthTitle} ${nextCalendar.year}</span></a>
 	</div>
 	<table summary="Contains links to events in ${selectedCalendar.monthTitle} ${selectedCalendar.year}" class="calendar">
 		<thead>
@@ -65,7 +65,7 @@
 											<c:if test="${loop_date==todaysCalendar.day && selectedCalendar.month==todaysCalendar.month && selectedCalendar.year== todaysCalendar.year}">
 												<c:set var="cssClass" value="${cssClass} today"/>
 											</c:if>
-											<c:if test="${selectedCalendar.year<todaysCalendar.year && selectedCalendar.month< todaysCalendar.month && loop_date<todaysCalendar.day}">
+											<c:if test="${!selectedCalendar.afterToday}">
 												<c:set var="cssClass" value="${cssClass} past_date"/>
 											</c:if>
 											<c:if test="${weekday>=6}">
@@ -111,7 +111,7 @@
 											<c:if test="${firstDayOfTheMonth==todaysCalendar.day && selectedCalendar.month==todaysCalendar.month && selectedCalendar.year == todaysCalendar.year}">
 												<c:set var="cssClass" value="${cssClass} today"/>
 											</c:if>
-											<c:if test="${selectedCalendar.year<todaysCalendar.year && selectedCalendar.month<todaysCalendar.month && firstDayOfTheMonth<todaysCalendar.day}">
+											<c:if test="${selectedCalendar.year<=todaysCalendar.year && selectedCalendar.month<=todaysCalendar.month && firstDayOfTheMonth<todaysCalendar.day}">
 												<c:set var="cssClass" value="${cssClass} past_date"/>
 											</c:if>
 											<c:if test="${weekday>6}">
