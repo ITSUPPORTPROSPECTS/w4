@@ -11,7 +11,7 @@
 		<a href="/calendar.htm?month=${previousCalendar.month}&amp;year=${previousCalendar.year}&amp;day=${previousCalendar.monthLastDay}" title="Events in ${previousCalendar.monthTitle} ${previousCalendar.year}" class="prev_month prev plainlink">&nbsp;<span class="offscreen">Events in ${previousCalendar.monthTitle} ${previousCalendar.year}</span></a>
 		<h2>
 			<c:out value="${selectedCalendar.monthTitle}"/> ${selectedCalendar.year}
-		</h2><a href="/calendar.htm?month=${nextCalendar.month}&amp;year=${nextCalendar.year}&amp;day=${nextCalendar.monthFirstDay}" title="Events in December 2012" class="next_month next plainlink">&nbsp;<span class="offscreen">Events in ${nextCalendar.monthTitle} ${nextCalendar.year}</span></a>
+		</h2><a href="/calendar.htm?month=${nextCalendar.month}&amp;year=${nextCalendar.year}&amp;day=${nextCalendar.monthFirstDay}" title="Events in ${nextCalendar.monthTitle} ${nextCalendar.year}" class="next_month next plainlink">&nbsp;<span class="offscreen">Events in ${nextCalendar.monthTitle} ${nextCalendar.year}</span></a>
 	</div>
 	<table summary="Contains links to events in ${selectedCalendar.monthTitle} ${selectedCalendar.year}" class="calendar">
 		<thead>
@@ -46,7 +46,7 @@
 
 		<c:forEach var="week_number" begin="0" end="5" step="1" varStatus ="status">
 
-			<c:if test="${loop_date <= daysInMonth}">
+			<c:if test="${loop_date <= selectedCalendar.monthLastDay}">
 			<c:set var="first_week_class" value=""/>
 				<c:if test="${week_number==0}">
 					<c:set var="first_week_class" value="first_week"/>
@@ -61,11 +61,12 @@
 
 								<c:set var="cssClass" value=""/>
 								<c:choose>
-									<c:when test="${loop_date <= daysInMonth}">
+									<c:when test="${loop_date <= selectedCalendar.monthLastDay}">
 											<c:if test="${loop_date==todaysCalendar.day && selectedCalendar.month==todaysCalendar.month && selectedCalendar.year== todaysCalendar.year}">
 												<c:set var="cssClass" value="${cssClass} today"/>
 											</c:if>
-											<c:if test="${!selectedCalendar.afterToday}">
+											<c:if test="${selectedCalendar.year < todaysCalendar.year || (selectedCalendar.year == todaysCalendar.year && selectedCalendar.month < todaysCalendar.month)
+											||(selectedCalendar.year == todaysCalendar.year && selectedCalendar.month == todaysCalendar.month && loop_date < todaysCalendar.day)}">
 												<c:set var="cssClass" value="${cssClass} past_date"/>
 											</c:if>
 											<c:if test="${weekday>=6}">
@@ -103,21 +104,22 @@
 							</c:when>
 							<c:otherwise>
 								<c:choose>
-									<c:when test="${firstDayOfTheMonthWeekday != weekday}">
+									<c:when test="${selectedCalendar.monthFirstDayWeekday != weekday}">
 										<td class="prev_month past_date"><span>&nbsp;</span></td>
 									</c:when>
-									<c:when test="${firstDayOfTheMonthWeekday==weekday}">
+									<c:when test="${selectedCalendar.monthFirstDayWeekday==weekday}">
 									<c:set var="cssClass" value=""/>
-											<c:if test="${firstDayOfTheMonth==todaysCalendar.day && selectedCalendar.month==todaysCalendar.month && selectedCalendar.year == todaysCalendar.year}">
+											<c:if test="${selectedCalendar.monthFirstDay==todaysCalendar.day && selectedCalendar.month==todaysCalendar.month && selectedCalendar.year == todaysCalendar.year}">
 												<c:set var="cssClass" value="${cssClass} today"/>
 											</c:if>
-											<c:if test="${selectedCalendar.year<=todaysCalendar.year && selectedCalendar.month<=todaysCalendar.month && firstDayOfTheMonth<todaysCalendar.day}">
+											<c:if test="${selectedCalendar.year < todaysCalendar.year || (selectedCalendar.year == todaysCalendar.year && selectedCalendar.month < todaysCalendar.month )||
+											 (selectedCalendar.year == todaysCalendar.year && selectedCalendar.month == todaysCalendar.month && selectedCalendar.monthFirstDay<todaysCalendar.day)}">
 												<c:set var="cssClass" value="${cssClass} past_date"/>
 											</c:if>
 											<c:if test="${weekday>6}">
 												<c:set var="cssClass" value="${cssClass} weekend"/>
 											</c:if>
-											<c:if test="${firstDayOfTheMonth==selectedCalendar.day}">
+											<c:if test="${selectedCalendar.monthFirstDay==selectedCalendar.day}">
 												<c:set var="cssClass" value="${cssClass} selected_day"/>
 											</c:if>
 										<td class="${cssClass}">
