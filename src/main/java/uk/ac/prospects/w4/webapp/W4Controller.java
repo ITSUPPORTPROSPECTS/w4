@@ -47,7 +47,7 @@ public class W4Controller {
 
 		ModelAndView model = new ModelAndView(page);
 		model.addObject("generalUrl", UrlBuilder.buildGeneralURL(provId,provTitle, keyword, fromStartDate, toStartDate, courseTitle));
-				model.addObject("calendarUrl", UrlBuilder.buildCalendarURL(provId,provTitle, keyword));
+		model.addObject("calendarUrl", UrlBuilder.buildCalendarURL(provId,provTitle, keyword, fromStartDate, toStartDate, courseTitle));
 		model.addObject("msg", "Any page");
 		return model;
 	}
@@ -81,8 +81,8 @@ public class W4Controller {
 
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("courses", courses);
-		model.addObject("generalUrl", UrlBuilder.buildGeneralURL(provId,provTitle, keyword, fromStartDate, toStartDate, courseTitle));
-		model.addObject("calendarUrl", UrlBuilder.buildCalendarURL(provId,provTitle, keyword));
+		model.addObject("generalUrl", UrlBuilder.buildGeneralURL(provId, provTitle, keyword, fromStartDate, toStartDate, courseTitle));
+		model.addObject("calendarUrl", UrlBuilder.buildCalendarURL(provId, provTitle, keyword, fromStartDate, toStartDate, courseTitle));
 		return model;
 	}
 
