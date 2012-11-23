@@ -10,7 +10,7 @@
 <body>
 	<ul class="tabs clearfix">
 		<li class="<c:if test="${selectedPage == 'Calendar'}">selected</c:if>"><a href="calendar.htm?${calendarUrl}">Calendar</a></li>
-		<li class="<c:if test="${selectedPage == 'Map'}">selected</c:if>"><a href="map.htm${generalUrl}">Map</a></li>
+		<li class="<c:if test="${selectedPage == 'Map'}">selected</c:if>"><a href="map.htm?${generalUrl}">Map</a></li>
 		<%--<li class="settings"><a href="settings.htm"><span class="offscreen">Settings</span>&nbsp;</a></li>--%>
 	</ul>
 	<div id="w4">
