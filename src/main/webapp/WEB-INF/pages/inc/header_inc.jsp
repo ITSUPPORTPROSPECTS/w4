@@ -5,13 +5,13 @@
 	<title>NOT DEFINED</title>
 	<style type="text/css" media="all">@import "assets/css/reset.css";</style>
 	<style type="text/css" media="all">@import "assets/css/style.css";</style>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 </head>
 <body>
 	<ul class="tabs clearfix">
-		<li class="selected"><a href="index.htm">List</a></li>
-		<li><a href="calendar.htm">Calendar</a></li>
-		<li><a href="map.htm">Map</a></li>
-		<li class="settings"><a href="settings.htm"><span class="offscreen">Settings</span>&nbsp;</a></li>
+		<li class="<c:if test="${selectedPage == 'Calendar'}">selected</c:if>"><a href="calendar.htm">Calendar</a></li>
+		<li class="<c:if test="${selectedPage == 'Map'}">selected</c:if>"><a href="map.htm">Map</a></li>
+		<%--<li class="settings"><a href="settings.htm"><span class="offscreen">Settings</span>&nbsp;</a></li>--%>
 	</ul>
 	<div id="w4">
 		<div class="inner">
