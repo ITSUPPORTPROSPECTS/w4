@@ -4,7 +4,6 @@ import java.util.Date;
 
 /**
  * Holds the course information displayed on the widget's pages.
- *
  */
 public class Course {
 
@@ -165,6 +164,7 @@ public class Course {
 		this.setProviderId(course.getProviderId());
 		this.setProviderLongitude(course.getProviderLongitude());
 		this.setProviderUrl(course.getProviderUrl());
+		this.setProviderTitle(course.getProviderTitle());
 		this.setUrl(course.getUrl());
 	}
 }
