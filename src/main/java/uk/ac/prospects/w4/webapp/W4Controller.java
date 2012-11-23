@@ -26,6 +26,8 @@ import java.util.List;
 @Controller
 public class W4Controller {
 
+	private static final int MAX_RESULTS = 200;
+
 	private CourseRepository courseRepository;
 
 	@Autowired
@@ -52,7 +54,7 @@ public class W4Controller {
 															Boolean excludeEmptyStartDates
 	) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
 		CourseSearchArgument argument = new CourseSearchArgument();
-		argument.setMaxResults(10);
+		argument.setMaxResults(MAX_RESULTS);
 		argument.setProviderId(provId);
 		argument.setFromStartDate(fromStartDate);
 		argument.setToStartDate(toStartDate);
