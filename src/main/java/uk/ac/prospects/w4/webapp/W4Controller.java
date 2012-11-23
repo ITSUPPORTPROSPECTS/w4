@@ -36,22 +36,31 @@ public class W4Controller {
 	}
 
 	@RequestMapping(value = "/{page}.htm", method = RequestMethod.GET)
-	public ModelAndView anyPage(@PathVariable String page) {
+	public ModelAndView anyPage(@PathVariable String page,
+								@RequestParam(value = "provid", required = false) String provId,
+								@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
+								@RequestParam(value = "toStartDate", required = false) String toStartDate,
+								@RequestParam(value = "keyword", required = false) String keyword,
+								@RequestParam(value = "startDate", required = false) String startDate,
+								@RequestParam(value = "courseTitle", required = false) String courseTitle,
+								@RequestParam(value = "provTitle", required = false) String provTitle) {
 
 		ModelAndView model = new ModelAndView(page);
+		model.addObject("generalUrl", UrlBuilder.buildGeneralURL(provId,provTitle, keyword, fromStartDate, toStartDate, courseTitle));
+				model.addObject("calendarUrl", UrlBuilder.buildCalendarURL(provId,provTitle, keyword));
 		model.addObject("msg", "Any page");
 		return model;
 	}
 
 	@RequestMapping(value = "/index.htm", method = RequestMethod.GET)
-	public ModelAndView retrieveCourseProviderAndCourse(	@RequestParam(value = "provid", required = false) String provId,
-															@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
-															@RequestParam(value = "toStartDate", required = false) String toStartDate,
-															@RequestParam(value = "keyword", required = false) String keyword,
-															@RequestParam(value = "startDate", required = false) String startDate,
-															@RequestParam(value = "courseTitle", required = false) String courseTitle,
-															@RequestParam(value = "provTitle", required = false) String provTitle,
-															Boolean excludeEmptyStartDates
+	public ModelAndView retrieveCourseProviderAndCourse(@RequestParam(value = "provid", required = false) String provId,
+														@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
+														@RequestParam(value = "toStartDate", required = false) String toStartDate,
+														@RequestParam(value = "keyword", required = false) String keyword,
+														@RequestParam(value = "startDate", required = false) String startDate,
+														@RequestParam(value = "courseTitle", required = false) String courseTitle,
+														@RequestParam(value = "provTitle", required = false) String provTitle,
+														Boolean excludeEmptyStartDates
 	) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException, ParseException {
 		CourseSearchArgument argument = new CourseSearchArgument();
 		argument.setMaxResults(MAX_RESULTS);
@@ -72,6 +81,8 @@ public class W4Controller {
 
 		ModelAndView model = new ModelAndView("index");
 		model.addObject("courses", courses);
+		model.addObject("generalUrl", UrlBuilder.buildGeneralURL(provId,provTitle, keyword, fromStartDate, toStartDate, courseTitle));
+		model.addObject("calendarUrl", UrlBuilder.buildCalendarURL(provId,provTitle, keyword));
 		return model;
 	}
 
