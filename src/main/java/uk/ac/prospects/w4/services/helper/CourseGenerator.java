@@ -76,9 +76,10 @@ public class CourseGenerator {
 	 * generate courses from json search results
 	 *
 	 * @param jsonSearchResult course json search result
-	 * @param startDate
-	 * @param startFromDate
-	 * @param startToDate      @return a list of courses object
+	 * @param startDate        the specific startDate from calendar
+	 * @param startFromDate    return course after this date
+	 * @param startToDate      return course before this date
+	 * @return a list of courses object
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws XPathExpressionException
