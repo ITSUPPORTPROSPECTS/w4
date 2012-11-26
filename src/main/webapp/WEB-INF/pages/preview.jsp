@@ -37,19 +37,19 @@
 
 <c:choose>
 
-    <c:when test="${fn:contains(pageUrl,'dev.prospects.ac.uk')}">
+    <c:when test="${fn:contains(pageUrl,'dev.api.prospects.ac.uk')}">
 
         <c:set var="widgetUrl" value="http://dev.api.prospects.ac.uk/w4/calendar.htm"/>
 
     </c:when>
 
-    <c:when test="${fn:contains(pageUrl,'qa.prospects.ac.uk')}">
+    <c:when test="${fn:contains(pageUrl,'qa.api.prospects.ac.uk')}">
 
         <c:set var="widgetUrl" value="http://qa.api.prospects.ac.uk/w4/calendar.htm"/>
 
     </c:when>
 
-    <c:when test="${fn:contains(pageUrl,'stage.prospects.ac.uk')}">
+    <c:when test="${fn:contains(pageUrl,'stage.api.prospects.ac.uk')}">
 
         <c:set var="widgetUrl" value="http://stage.api.prospects.ac.uk/w4/calendar.htm"/>
 
