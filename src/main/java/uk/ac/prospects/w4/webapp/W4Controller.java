@@ -113,16 +113,16 @@ public class W4Controller {
 
 	@RequestMapping(value = "/calendar.htm", method = RequestMethod.GET)
 	public ModelAndView retriveCalendar(@RequestParam(value = "provid", required = false) String provId,
-															@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
-															@RequestParam(value = "toStartDate", required = false) String toStartDate,
-															@RequestParam(value = "keyword", required = false) String keyword,
-															@RequestParam(value = "startDate", required = false) String startDate,
-															@RequestParam(value = "courseTitle", required = false) String courseTitle,
-															@RequestParam(value = "provTitle", required = false) String provTitle,
-															@RequestParam(value = "preserve", required = false) String preserve,
-															@RequestParam(value = "day", required=false) Integer day,
-															@RequestParam(value = "month", required=false) Integer month,
-															@RequestParam(value = "year", required=false) Integer year) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
+										@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
+										@RequestParam(value = "toStartDate", required = false) String toStartDate,
+										@RequestParam(value = "keyword", required = false) String keyword,
+										@RequestParam(value = "startDate", required = false) String startDate,
+										@RequestParam(value = "courseTitle", required = false) String courseTitle,
+										@RequestParam(value = "provTitle", required = false) String provTitle,
+										@RequestParam(value = "preserve", required = false) String preserve,
+										@RequestParam(value = "day", required = false) Integer day,
+										@RequestParam(value = "month", required = false) Integer month,
+										@RequestParam(value = "year", required = false) Integer year) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
 
 		Calendar calendar = createSelectedMonthCalendarFromValuesSetOrIfNotSetFromTodaysDate(year, month, day);
 
@@ -148,7 +148,7 @@ public class W4Controller {
 		for (Course course : courses) {
 			Calendar courseCalendar = Calendar.getInstance();
 			courseCalendar.setTime(course.getStartDate());
-			if(courseCalendar.get(Calendar.MONTH)+1 == selectedCalendar.getMonth() && courseCalendar.get(Calendar.YEAR) == selectedCalendar.getYear()){
+			if (courseCalendar.get(Calendar.MONTH) + 1 == selectedCalendar.getMonth() && courseCalendar.get(Calendar.YEAR) == selectedCalendar.getYear()) {
 				int dayNumber = courseCalendar.get(Calendar.DAY_OF_MONTH);
 				dates[dayNumber] = 1;
 			}
@@ -157,7 +157,7 @@ public class W4Controller {
 
 
 		//retrieve course list for specific selected date
-		fromStartDate = getFormattedDateFromCalendar(calendar, FROM_TO_START_DATE_FORMAT );
+		fromStartDate = getFormattedDateFromCalendar(calendar, FROM_TO_START_DATE_FORMAT);
 		toStartDate = fromStartDate;
 		ModelAndView modelForSelectedDay = retrieveCourseProviderAndCourse(provId, fromStartDate, toStartDate, keyword, startDate, courseTitle, provTitle, false);
 		List<Course> coursesForSelectedDay = (List<Course>) modelForSelectedDay.getModel().get("courses");
@@ -182,37 +182,53 @@ public class W4Controller {
 		return model;
 	}
 
-	private String getFormattedFromStartDateFromCalendarFirstDayOfTheMonth(Calendar calendar, String dateFormatToExpect){
+	@RequestMapping(value = "/codeReview", method = RequestMethod.GET)
+	public ModelAndView generateIframeURL(@RequestParam(value = "provid", required = false) String provId,
+										  @RequestParam(value = "fromStartDate", required = false) String fromStartDate,
+										  @RequestParam(value = "toStartDate", required = false) String toStartDate,
+										  @RequestParam(value = "keywords", required = false) String keywords
+	) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
+
+		ModelAndView model = new ModelAndView("preview");
+		model.addObject("searchParams", "keyword=" + keywords + "&provid=" + provId + "&fromStartDate=" + fromStartDate + "&toStartDate=" + toStartDate);
+		return model;
+	}
+
+	@RequestMapping(value = "codeGenerator.htm", method = RequestMethod.GET)
+	public String codeGeneratorSearchPage() {
+		return "codeGenerator";
+	}
+
+	private String getFormattedFromStartDateFromCalendarFirstDayOfTheMonth(Calendar calendar, String dateFormatToExpect) {
 		Calendar monthCalendar = Calendar.getInstance();
 		monthCalendar.setTime(calendar.getTime());
-		monthCalendar.set(Calendar.DAY_OF_MONTH, monthCalendar.getActualMinimum(Calendar.DAY_OF_MONTH) );
+		monthCalendar.set(Calendar.DAY_OF_MONTH, monthCalendar.getActualMinimum(Calendar.DAY_OF_MONTH));
 		return getFormattedDateFromCalendar(monthCalendar, dateFormatToExpect);
 	}
 
-	private String getFormattedToStartDateFromCalendarLastDayOfTheMonth(Calendar calendar, String dateFormatToExpect){
+	private String getFormattedToStartDateFromCalendarLastDayOfTheMonth(Calendar calendar, String dateFormatToExpect) {
 		Calendar monthCalendar = Calendar.getInstance();
 		monthCalendar.setTime(calendar.getTime());
 		monthCalendar.set(Calendar.DAY_OF_MONTH, monthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		return getFormattedDateFromCalendar(monthCalendar, dateFormatToExpect);
 	}
 
-	private String getFormattedDateFromCalendar(Calendar calendar, String dateFormatToExpect){
+	private String getFormattedDateFromCalendar(Calendar calendar, String dateFormatToExpect) {
 		SimpleDateFormat format = new SimpleDateFormat(dateFormatToExpect);
 		return format.format(calendar.getTime());
 	}
 
 
-
-	private Calendar createSelectedMonthCalendarFromValuesSetOrIfNotSetFromTodaysDate(Integer year, Integer month, Integer day){
-		if(day==null || month== null || year==null){
+	private Calendar createSelectedMonthCalendarFromValuesSetOrIfNotSetFromTodaysDate(Integer year, Integer month, Integer day) {
+		if (day == null || month == null || year == null) {
 			Calendar todaysCalendar = Calendar.getInstance();
 			todaysCalendar.setTime(new Date());
-			day=todaysCalendar.get(Calendar.DAY_OF_MONTH);
-			month=todaysCalendar.get(Calendar.MONTH) + 1;
+			day = todaysCalendar.get(Calendar.DAY_OF_MONTH);
+			month = todaysCalendar.get(Calendar.MONTH) + 1;
 			year = todaysCalendar.get(Calendar.YEAR);
 		}
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(year,month-1, day);
+		calendar.set(year, month - 1, day);
 		return calendar;
 	}
 
