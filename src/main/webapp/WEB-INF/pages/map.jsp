@@ -17,6 +17,8 @@ pageContext.setAttribute("alpha", alpha);
     	var geocoder;
     	var map;
     	var alpha = new Array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
+    	var locations = new Array();
+    	var n = 0;
 
       	function initialize() {
       		geocoder = new google.maps.Geocoder();
@@ -43,7 +45,6 @@ pageContext.setAttribute("alpha", alpha);
 
 	       	if (courses) {
 	       		for (var level in courses) {
-	       			var n = 0;
 	       			for (var i = 0; i < courses[level].length; i++) {
 	       				if (n < 26) {
 		       				if (courses[level][i].coords == "0.0000000000, 0.0000000000") {
@@ -58,8 +59,8 @@ pageContext.setAttribute("alpha", alpha);
 									icon: "http://maps.google.com/mapfiles/marker"+alpha[n]+".png",
 									flat: true
 								});
+								n++;
 		       				}
-		       				n++;
 	       				}
 					}
 	       		}
@@ -76,6 +77,7 @@ pageContext.setAttribute("alpha", alpha);
 						icon: "http://maps.google.com/mapfiles/marker"+alpha[index]+".png",
 						flat: true
 					});
+					n++;
 				}
 			})
 		}

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>NOT DEFINED</title>
+	<title>JISC | ${selectedPage}</title>
 	<style type="text/css" media="all">@import "assets/css/reset.css";</style>
 	<style type="text/css" media="all">@import "assets/css/style.css";</style>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>

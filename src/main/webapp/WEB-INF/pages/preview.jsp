@@ -1,5 +1,37 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Code generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+
+    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+        body { padding-top: 60px; padding-bottom: 40px; }
+    </style>
+    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+        <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+        <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="#">What? When? Where? Widget &raquo; Code Generator</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+    <div class="row">
+        <div class="span6">
 
 <c:choose>
 
@@ -30,17 +62,9 @@
 </c:choose>
 
 <c:set var="iframeVar"
-       value="<iframe src=\"${widgetUrl}?${searchParams}\" frameborder=\"0\" border=\"0\" width=\"100%\" scrolling=\"no\" allowtransparency=\"true\" style=\"border:none; overflow: hidden; width: 100%;\"/></iframe>"/>
-
-<textarea rows="4" cols="50">
-    <c:out value="${iframeVar}"/>
-
-</textarea>
-
-<c:out value="${iframeVar}" escapeXml="false"/>
+       value="<iframe src=\"${widgetUrl}?${searchParams}\" frameborder=\"0\" border=\"0\" width=\"100%\" scrolling=\"no\" allowtransparency=\"true\" style=\"border:none; overflow: hidden; width: 100%; height: 500px;\"/></iframe>"/>
 
 
-<h2>CPD course widget preview settings</h2>
 
 <form action="codeReview" method="get">
     <div class="margbottom">
@@ -80,8 +104,24 @@
             <input id="toStartDate" class="width100" name="toStartDate" type="text"/>
         </div>
     </div>
-    <div class="clear">&nbsp;</div>
     <div class="buttongroup righttext">
-        <input type="submit" class="btn" value="Go"/>
+        <input type="submit" class="btn btn-primary" value="Generate"/>
     </div>
 </form>
+
+<pre><c:out value="${iframeVar}"/></pre>
+
+</div>
+
+<div class="span3">
+    <h3>Preview</h3>
+<c:out value="${iframeVar}" escapeXml="false"/>
+    </div>
+</div>
+</div>
+
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="https://raw.github.com/twitter/bootstrap/master/js/bootstrap-dropdown.js"></script>
+    <script src="https://raw.github.com/twitter/bootstrap/master/js/bootstrap-scrollspy.js"></script>
+</body>
+</html>
