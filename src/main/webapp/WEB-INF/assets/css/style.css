@@ -136,6 +136,11 @@ a:hover, a:focus {
 #w4 ul li .tertiary {
   color: #909090;
 }
+#w4 ul.compact_list {
+  height: 163px;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+}
 
 ul.tabs {
   display: block;

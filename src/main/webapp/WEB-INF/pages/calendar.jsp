@@ -111,7 +111,7 @@
 											 (selectedCalendar.year == todaysCalendar.year && selectedCalendar.month == todaysCalendar.month && selectedCalendar.monthFirstDay<todaysCalendar.day)}">
 												<c:set var="cssClass" value="${cssClass} past_date"/>
 											</c:if>
-											<c:if test="${weekday>6}">
+											<c:if test="${weekday>=6}">
 												<c:set var="cssClass" value="${cssClass} weekend"/>
 											</c:if>
 											<c:if test="${selectedCalendar.monthFirstDay==selectedCalendar.day}">
