@@ -133,6 +133,9 @@ a:hover, a:focus {
     p {
         padding-bottom: 0.5em;
     }
+    .component_container {
+        height: 200px;
+    }
 }
 
 //Lists
@@ -175,8 +178,10 @@ a:hover, a:focus {
 	}
 	&.compact_list
 		{
-		height: 163px;
-		overflow-y:scroll;
+		max-height: 163px;
+        min-height: 163px;
+		overflow-y:auto;
+        overflow-x:hidden;
 		margin-bottom:10px;
 		}
 }
