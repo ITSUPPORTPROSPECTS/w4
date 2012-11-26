@@ -175,6 +175,14 @@ ul.tabs li.selected a {
   color: #336699;
 }
 
+ul.map_list img.map_marker {
+  float: left;
+  padding-right: 0.5em;
+}
+ul.map_list .left {
+  width: 60%;
+}
+
 form label {
   color: #767676;
   display: block;
@@ -280,14 +288,4 @@ form .buttongroup {
 }
 #w4 .calendar tbody tr td.prev_month, #w4 .calendar tbody tr td.next_month {
   background-color: white;
-}
-
-h3.comment {
-  color: #d0d0d0;
-  margin-bottom: 1em;
-  margin-top: 1em;
-}
-
-h3.comment::before {
-  content: "//";
 }

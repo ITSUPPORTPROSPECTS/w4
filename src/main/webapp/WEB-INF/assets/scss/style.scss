@@ -212,6 +212,17 @@ ul.tabs {
     }
 }
 
+//Map list
+ul.map_list {
+    img.map_marker {
+        float: left;
+        padding-right: 0.5em;
+    }
+    .left {
+        width: 60%;
+    }
+}
+
 //Forms
 form {
 	label {
@@ -318,16 +329,4 @@ form {
             }
         }
     }
-}
-
-//TEMPORARY
-
-h3.comment {
-	color: lighten($baseTextColor, 50%);
-	margin-bottom: 1em;
-    margin-top: 1em;
-}
-
-h3.comment::before {
-	content: "//";
 }

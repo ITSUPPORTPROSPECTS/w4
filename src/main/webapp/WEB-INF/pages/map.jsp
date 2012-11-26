@@ -2,6 +2,10 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%pageContext.setAttribute("newLineChar", "\n"); %>
+<%
+String[] alpha= {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+pageContext.setAttribute("alpha", alpha);
+%>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 
 <c:set var="selectedPage" value="Map" />
@@ -12,6 +16,8 @@
     <script type="text/javascript">
     	var geocoder;
     	var map;
+    	var alpha = new Array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
+
       	function initialize() {
       		geocoder = new google.maps.Geocoder();
 			var courses = {
@@ -37,18 +43,23 @@
 
 	       	if (courses) {
 	       		for (var level in courses) {
+	       			var n = 0;
 	       			for (var i = 0; i < courses[level].length; i++) {
-	       				if (courses[level][i].coords == "0.0000000000, 0.0000000000") {
-	       					if (courses[level][i].address != "  ") {
-	       						codeAddress(courses[level][i].address);	
-	       					}
-	       				} else {
-	       					var latLng = courses[level][i].coords.split(",");
-	       					new google.maps.Marker({
-								map: map,
-								position: new google.maps.LatLng(latLng[0], latLng[1].trim()),
-								flat: true
-							});
+	       				if (n < 26) {
+		       				if (courses[level][i].coords == "0.0000000000, 0.0000000000") {
+		       					if (courses[level][i].address != "  ") {
+		       						codeAddress(courses[level][i].address, index);	
+		       					}
+		       				} else {
+		       					var latLng = courses[level][i].coords.split(",");
+		       					new google.maps.Marker({
+									map: map,
+									position: new google.maps.LatLng(latLng[0], latLng[1].trim()),
+									icon: "http://maps.google.com/mapfiles/marker"+alpha[n]+".png",
+									flat: true
+								});
+		       				}
+		       				n++;
 	       				}
 					}
 	       		}
@@ -56,12 +67,13 @@
 
       	}
 
-		function codeAddress(address) {
+		function codeAddress(address, index) {
 			geocoder.geocode({'address':address}, function(results, status) {
 				if (status == google.maps.GeocoderStatus.OK) {
 					new google.maps.Marker({
 						map: map,
 						position: results[i].geometry.location,
+						icon: "http://maps.google.com/mapfiles/marker"+alpha[index]+".png",
 						flat: true
 					});
 				}
@@ -75,12 +87,18 @@
 
 	<h2 class="margtop">CPD courses by region</h2>
 	
-	<ul class="structure_1">
+	<ul class="structure_1 map_list">
 		<c:choose>
 			<c:when test="${not empty courses}">
+
+				
+
 			    <c:forEach var="course" items="${courses}" varStatus="status">
 			        <li class="clearfix">
 			            <div class="left">
+				            <c:if test="${status.count <= 26}">
+				            	<img class="map_marker" src="http://maps.google.com/mapfiles/marker${alpha[status.count-1]}.png" />
+				            </c:if>
 			                <div class="primary item">
 			                    <a href="${course.url}">${course.title}</a>
 			                </div>

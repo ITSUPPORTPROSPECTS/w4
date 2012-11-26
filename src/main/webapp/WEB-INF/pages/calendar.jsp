@@ -54,7 +54,7 @@
 
 
 				<tr class="${first_week_class}">
-					<c:forEach var="weekday" begin="1" end="7" step="1" varStatus ="status">
+					<c:forEach var="weekday" begin="1" end="7" step="1" varStatus="status">
 						<c:choose>
 							<c:when test="${firstDaySet}">
 
@@ -76,17 +76,14 @@
 												<c:set var="cssClass" value="${cssClass} selected_day"/>
 											</c:if>
 										<td class="${cssClass}">
-													<span>
 													<c:choose>
 														<c:when test="${dates[loop_date]==1}">
 															<a href="/w4/calendar.htm?day=${loop_date}&amp;month=${selectedCalendar.month}&amp;year=${selectedCalendar.year}&amp;${calendarUrl}" >${loop_date}</a>
 														</c:when>
 														<c:otherwise>
-															${loop_date}
+															<span>${loop_date}</span>
 														</c:otherwise>
 													</c:choose>
-
-													</span>
 												</td>
 									<c:set var="loop_date" value="${loop_date+1}"/>
 									</c:when>
@@ -95,8 +92,6 @@
 										<c:if test="${weekend >= 6}">
 											<c:set var="cssClass" value="${cssClass} weekend"/>
 										</c:if>
-
-
 										<td class="${cssClass}"><span>&nbsp;</span></td>
 									</c:otherwise>
 								</c:choose>
@@ -123,16 +118,14 @@
 												<c:set var="cssClass" value="${cssClass} selected_day"/>
 											</c:if>
 										<td class="${cssClass}">
-													<span>
-														<c:choose>
+													<c:choose>
 														<c:when test="${dates[loop_date]==1}">
 															<a href="/w4/calendar.htm?day=${loop_date}&amp;month=${selectedCalendar.month}&amp;year=${selectedCalendar.year}&amp;${calendarUrl}" >${loop_date}</a>
 														</c:when>
 														<c:otherwise>
-															${loop_date}
+															<span>${loop_date}</span>
 														</c:otherwise>
 													</c:choose>
-													</span>
 												</td>
 										<c:set var="loop_date" value="${loop_date+1}"/>
 										<c:set var="firstDaySet" value="true"/>
@@ -145,99 +138,51 @@
 
 			</c:if>
 			</c:forEach>
-
-		<%--	<tr>
-				<td class="past_date">
-					<a href="/pages/prospects/myprospects_dashboard.htm?_eventId=viewDay&amp;month=11&amp;year=2012&amp;day=5" title="Events on 5 November 2012">5</a>
-				</td>
-				<td class="past_date">
-					<span>6</span>
-				</td>
-				<td class="past_date">
-					<a href="/pages/prospects/myprospects_dashboard.htm?_eventId=viewDay&amp;month=11&amp;year=2012&amp;day=7" title="Events on 7 November 2012">7</a>
-				</td>
-				<td class="past_date">
-					<span>8</span>
-				</td>
-				<td class="past_date">
-					<a href="/pages/prospects/myprospects_dashboard.htm?_eventId=viewDay&amp;month=11&amp;year=2012&amp;day=9" title="Events on 9 November 2012">9</a>
-				</td>
-				<td class="weekend past_date">
-					<span>10</span>
-				</td>
-				<td class="weekend past_date">
-					<a href="/pages/prospects/myprospects_dashboard.htm?_eventId=viewDay&amp;month=11&amp;year=2012&amp;day=11" title="Events on 11 November 2012">11</a>
-				</td>
-			</tr>
-			<tr>
-				<td class="past_date">
-					<span>12</span>
-				</td>
-				<td class="past_date">
-					<span>13</span>
-				</td>
-				<td class="past_date">
-					<a href="/pages/prospects/myprospects_dashboard.htm?_eventId=viewDay&amp;month=11&amp;year=2012&amp;day=14" title="Events on 14 November 2012">14</a>
-				</td>
-				<td class="past_date">
-					<span>15</span>
-				</td>
-				<td class="past_date">
-					<span>16</span>
-				</td>
-				<td class="weekend past_date">
-					<span>17</span>
-				</td>
-				<td class="weekend past_date">
-					<span>18</span>
-				</td>
-			</tr>
-			<tr>
-				<td class="today selected_day">
-					<a href="/pages/prospects/myprospects_dashboard.htm?_eventId=viewDay&amp;month=11&amp;year=2012&amp;day=19" title="Events on 19 November 2012">19</a>
-				</td>
-				<td class="">
-					<span>20</span>
-				</td>
-				<td class="">
-					<a href="/pages/prospects/myprospects_dashboard.htm?_eventId=viewDay&amp;month=11&amp;year=2012&amp;day=21" title="Events on 21 November 2012">21</a>
-				</td>
-				<td class="">
-					<a href="/pages/prospects/myprospects_dashboard.htm?_eventId=viewDay&amp;month=11&amp;year=2012&amp;day=22" title="Events on 22 November 2012">22</a>
-				</td>
-				<td class="">
-					<span>23</span>
-				</td>
-				<td class="weekend">
-					<span>24</span>
-				</td>
-				<td class="weekend">
-					<span>25</span>
-				</td>
-			</tr>--%>
-			<%--<tr>
-				<td class="">
-					<a href="/pages/prospects/myprospects_dashboard.htm?_eventId=viewDay&amp;month=11&amp;year=2012&amp;day=26" title="Events on 26 November 2012">26</a>
-				</td>
-				<td class="">
-					<span>27</span>
-				</td>
-				<td class="">
-					<a href="/pages/prospects/myprospects_dashboard.htm?_eventId=viewDay&amp;month=11&amp;year=2012&amp;day=28" title="Events on 28 November 2012">28</a>
-				</td>
-				<td class="">
-					<a href="/pages/prospects/myprospects_dashboard.htm?_eventId=viewDay&amp;month=11&amp;year=2012&amp;day=29" title="Events on 29 November 2012">29</a>
-				</td>
-				<td class="">
-					<span>30</span>
-				</td>
-				<td class="next_month weekend"><span>&nbsp;</span></td>
-				<td class="next_month weekend"><span>&nbsp;</span></td>
-			</tr>--%>
 		</tbody>
 	</table>
 
+<h2 class="margtop">CPD courses on ${selectedCalendar.day}/${selectedCalendar.month}/${selectedCalendar.year}</h2>
 
-<%@include file="index.jsp"%>
+<ul class="structure_1">
+    <c:choose>
+        <c:when test="${not empty courses}">
+            <c:forEach var="course" items="${courses}" varStatus="status">
+                <li class="clearfix">
+                    <div class="left">
+                        <div class="primary item">
+                            <a href="${course.url}">${course.title}</a>
+                        </div>
+                        <div class="secondary item">
+                                ${course.providerTitle}
+                        </div>
+                        <div class="tertiary item">
+                                ${course.town}
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="item_heading">
+                            Start date
+                        </div>
+                        <div class="item">
+                            <c:choose>
+                                <c:when test="${course.startDate!=null}">
+                                    <fmt:formatDate pattern="yyyy-MM-dd" value="${course.startDate}"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <p class="chilled">See course details</p>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
+                </li>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <li class="clearfix">
+                <p class="centertext chilled">No results found</p>
+            </li>
+        </c:otherwise>
+    </c:choose>    
+</ul>
 
 <%@include file="inc/footer_inc.jsp" %>
