@@ -64,7 +64,7 @@
 </c:choose>
 
 <c:set var="iframeVar"
-       value="<iframe src=\"${widgetUrl}?${searchParams}\" frameborder=\"0\" border=\"0\" width=\"100%\" scrolling=\"no\" allowtransparency=\"true\" style=\"border:none; overflow: hidden; width: 100%; height: 500px;\"/></iframe>"/>
+       value="<iframe src=\"${widgetUrl}?${searchParams}\" frameborder=\"0\" border=\"0\" width=\"100%\" scrolling=\"no\" allowtransparency=\"true\" style=\"border:none; overflow: hidden; width: 100%; height: 540px;\"/></iframe>"/>
 
 
 
