@@ -173,6 +173,12 @@ a:hover, a:focus {
 			color: lighten($baseTextColor, 25%);
 		}
 	}
+	&.compact_list
+		{
+		height: 163px;
+		overflow-y:scroll;
+		margin-bottom:10px;
+		}
 }
 
 //Tabs
