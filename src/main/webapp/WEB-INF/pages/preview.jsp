@@ -1,21 +1,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<c:set var="pageUrl" value="${pageContext.request.requestURL}"/>
 
 <c:choose>
 
-    <c:when test="${serverEnvironment.hostNamesAsProperties['hostname.prospects'] eq 'dev.prospects.ac.uk'}">
+    <c:when test="${fn:contains(pageUrl,'dev.prospects.ac.uk')}">
 
         <c:set var="widgetUrl" value="http://dev.api.prospects.ac.uk/w4/calendar.htm"/>
 
     </c:when>
 
-    <c:when test="${serverEnvironment.hostNamesAsProperties['hostname.prospects'] eq 'qa.prospects.ac.uk'}">
+    <c:when test="${fn:contains(pageUrl,'qa.prospects.ac.uk')}">
 
         <c:set var="widgetUrl" value="http://qa.api.prospects.ac.uk/w4/calendar.htm"/>
 
     </c:when>
 
-    <c:when test="${serverEnvironment.hostNamesAsProperties['hostname.prospects'] eq 'stage.prospects.ac.uk'}">
+    <c:when test="${fn:contains(pageUrl,'stage.prospects.ac.uk')}">
 
         <c:set var="widgetUrl" value="http://stage.api.prospects.ac.uk/w4/calendar.htm"/>
 
