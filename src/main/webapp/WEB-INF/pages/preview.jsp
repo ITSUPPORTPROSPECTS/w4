@@ -105,24 +105,15 @@
                 </div>
                 <div class="left width50">
                     <div class="margright">
-<<<<<<< HEAD
-                        <label for="fromStartDate">From&nbsp;date&nbsp;<span>yyyy-mm-dd</span></label>
-                        <input id="fromStartDate" class="width100" name="fromStartDate" type="text" value="${param.fromStartDate}"/>
-=======
+
                         <label for="fromStartDate">From&nbsp;date&nbsp;<span>(yyyy-mm-dd)</span></label>
-                        <input id="fromStartDate" class="width100" name="fromStartDate" type="text"/>
->>>>>>> a557630e5e120ce3257bd8b802503b586d6f03fa
+                        <input id="fromStartDate" class="width100" name="fromStartDate" type="text" value="${param.fromStartDate}"/>
                     </div>
                 </div>
                 <div class="left width50">
                     <div>
-<<<<<<< HEAD
-                        <label for="toStartDate">To&nbsp;date&nbsp;<span>yyyy-mm-dd</span></label>
-                        <input id="toStartDate" class="width100" name="toStartDate" type="text" value="${param.toStartDate}"/>
-=======
                         <label for="toStartDate">To&nbsp;date&nbsp;<span>(yyyy-mm-dd)</span></label>
-                        <input id="toStartDate" class="width100" name="toStartDate" type="text"/>
->>>>>>> a557630e5e120ce3257bd8b802503b586d6f03fa
+                        <input id="toStartDate" class="width100" name="toStartDate" type="text" value="${param.toStartDate}"/>
                     </div>
                 </div>
                 <div class="buttongroup righttext">
