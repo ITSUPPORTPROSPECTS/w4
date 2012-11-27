@@ -65,13 +65,13 @@
                 </div>
                 <div>
                     <div>
-                        <label for="fromStartDate">From&nbsp;date&nbsp;<span>yyyy-mm-dd</span></label>
+                        <label for="fromStartDate">From&nbsp;date&nbsp;<span>(yyyy-mm-dd)</span></label>
                         <input id="fromStartDate" class="width100" name="fromStartDate" type="text"/>
                     </div>
                 </div>
                 <div>
                     <div>
-                        <label for="toStartDate">To&nbsp;date&nbsp;<span>yyyy-mm-dd</span></label>
+                        <label for="toStartDate">To&nbsp;date&nbsp;<span>(yyyy-mm-dd)</span></label>
                         <input id="toStartDate" class="width100" name="toStartDate" type="text"/>
                     </div>
                 </div>
