@@ -32,6 +32,12 @@
     </div>
 </div>
 
+
+<c:forEach var="error" items="${errors}">
+	<p> ${error.key} = ${error.value}</p>
+</c:forEach>
+
+
 <div class="container">
     <div class="row">
         <div class="span12">
@@ -39,11 +45,12 @@
             <form action="codeReview" method="get">
                 <div>
                     <label for="keywords">Keywords</label>
-                    <input id="keywords" class="width100" name="keywords" type="text"/>
+                    <input id="keywords" class="width100" name="keywords" type="text" value="${param.keywords}"/>
                 </div>
                 <div>
                     <label class="large" for="provid">Location</label>
-                    <select id="provid" name="provid">
+
+					<select id="provid" name="provid" value="${param.provid}">
                         <option value="">All</option>
                         <option value="d43e55c0-e482-4951-a17d-32db287334c9">Adam Smith College</option>
                         <option value="53787b46-a34a-42cb-bdd7-d6d01409ef0d">University of Lincoln</option>
@@ -66,13 +73,13 @@
                 <div>
                     <div>
                         <label for="fromStartDate">From&nbsp;date&nbsp;<span>yyyy-mm-dd</span></label>
-                        <input id="fromStartDate" class="width100" name="fromStartDate" type="text"/>
+                        <input id="fromStartDate" class="width100" name="fromStartDate" type="text" value="${param.fromStartDate}"/>
                     </div>
                 </div>
                 <div>
                     <div>
                         <label for="toStartDate">To&nbsp;date&nbsp;<span>yyyy-mm-dd</span></label>
-                        <input id="toStartDate" class="width100" name="toStartDate" type="text"/>
+                        <input id="toStartDate" class="width100" name="toStartDate" type="text" value="${param.toStartDate}"/>
                     </div>
                 </div>
                 <div>
