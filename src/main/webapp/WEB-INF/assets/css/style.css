@@ -98,9 +98,6 @@ a:hover, a:focus {
 #w4 p {
   padding-bottom: 0.5em;
 }
-#w4 .component_container {
-  height: 200px;
-}
 
 #w4 ul {
   font-size: 0.85em;
@@ -140,10 +137,8 @@ a:hover, a:focus {
   color: #909090;
 }
 #w4 ul.compact_list {
-  max-height: 163px;
-  min-height: 163px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  height: 163px;
+  overflow-y: scroll;
   margin-bottom: 10px;
 }
 

@@ -6,7 +6,7 @@
 <c:set var="selectedPage" value="Calendar" />
 
 <%@include file="inc/header_inc.jsp" %>
-<div class="component_container">
+
 	<div class="calendar_nav">
 		<a href="calendar.htm?month=${previousCalendar.month}&amp;year=${previousCalendar.year}&amp;day=${previousCalendar.monthLastDay}&amp;${calendarUrl}" title="Events in ${previousCalendar.monthTitle} ${previousCalendar.year}" class="prev_month prev plainlink">&nbsp;<span class="offscreen">Events in ${previousCalendar.monthTitle} ${previousCalendar.year}</span></a>
 		<h2>
@@ -140,10 +140,10 @@
 			</c:forEach>
 		</tbody>
 	</table>
-</div>
+
 <h2 class="margtop">CPD courses on ${selectedCalendar.day}/${selectedCalendar.month}/${selectedCalendar.year}</h2>
 
-<ul class="structure_1 compact_list">
+<ul class="structure_1">
     <c:choose>
         <c:when test="${not empty courses}">
             <c:forEach var="course" items="${courses}" varStatus="status">

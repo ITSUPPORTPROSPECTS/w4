@@ -84,12 +84,12 @@ pageContext.setAttribute("alpha", alpha);
 
      	google.maps.event.addDomListener(window, 'load', initialize);
     </script>
-<div class="component_container">
-    <div id="map_canvas" style="width:100%; height:200px;"></div>
-</div>
+
+    <div id="map_canvas" style="width:100%; height:250px;"></div>
+
 	<h2 class="margtop">CPD courses by region</h2>
 	
-	<ul class="structure_1 map_list compact_list">
+	<ul class="structure_1 map_list">
 		<c:choose>
 			<c:when test="${not empty courses}">
 
