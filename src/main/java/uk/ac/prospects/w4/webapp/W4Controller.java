@@ -185,10 +185,13 @@ public class W4Controller {
 	public ModelAndView generateIframeURL(@RequestParam(value = "provid", required = false) String provId,
 										  @RequestParam(value = "fromStartDate", required = false) String fromStartDate,
 										  @RequestParam(value = "toStartDate", required = false) String toStartDate,
-										  @RequestParam(value = "keywords", required = false) String keywords
+										  @RequestParam(value = "keywords", required = false) String keywords,
+										  @RequestParam(value = "provTitle", required = false) String provTitle,
+										  @RequestParam(value = "courseTitle", required = false) String courseTitle
 	) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
 
 		ModelAndView model = new ModelAndView("preview");
+
 		Map<String, String> errors = new HashMap<String, String>();
 		if(!DateValidator.validate(fromStartDate)){
 			errors.put("fromStartDate", "'From date' is entered incorrectly. Please check the format.");
@@ -199,7 +202,7 @@ public class W4Controller {
 
 		}
 		if(errors.isEmpty()){
-			model.addObject("searchParams", "keyword=" + keywords + "&provid=" + provId + "&fromStartDate=" + fromStartDate + "&toStartDate=" + toStartDate);
+			model.addObject("searchParams", UrlBuilder.buildCalendarURL(provId, provTitle, keywords, fromStartDate, toStartDate, courseTitle));
 		}else{
 
 			model = new ModelAndView("codeGenerator");
