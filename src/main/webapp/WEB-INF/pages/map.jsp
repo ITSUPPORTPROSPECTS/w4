@@ -102,7 +102,7 @@ pageContext.setAttribute("alpha", alpha);
 				            	<img class="map_marker" src="http://maps.google.com/mapfiles/marker${alpha[status.count-1]}.png" />
 				            </c:if>
 			                <div class="primary item">
-			                    <a href="${course.url}">${course.title}</a>
+			                    <a target="_blank" href="${course.url}">${course.title}</a>
 			                </div>
 			                <div class="secondary item">
 		                    	${course.providerTitle}	                    
@@ -118,7 +118,7 @@ pageContext.setAttribute("alpha", alpha);
 			                <div class="item">
 			                	<c:choose>
 				                	<c:when test="${course.startDate != null}">
-				                		<fmt:formatDate pattern="yyyy-MM-dd" value="${course.startDate}"/>
+				                		<fmt:formatDate pattern="dd/MM/yyyy" value="${course.startDate}"/>
 				                	</c:when>
 				                	<c:otherwise>
 				                		<p class="chilled">See course details</p>
