@@ -33,14 +33,18 @@
 </div>
 
 
-<c:forEach var="error" items="${errors}">
-	<p> ${error.key} = ${error.value}</p>
-</c:forEach>
-
 
 <div class="container">
     <div class="row">
         <div class="span12">
+
+            <c:if test="${not empty errors}">
+                <div class="alert alert-error">
+                    <c:forEach var="error" items="${errors}">
+                        <p> ${error.key} = ${error.value}</p>
+                    </c:forEach>
+                </div>
+            </c:if>
 
             <form action="codeReview" method="get">
                 <div>
