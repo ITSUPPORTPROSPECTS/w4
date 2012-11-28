@@ -23,7 +23,6 @@ public class UrlBuilder {
 
 		StringBuilder calendarSb = new StringBuilder();
 		if (StringUtils.hasText(fromStartDate) || StringUtils.hasText(toStartDate) || StringUtils.hasText(courseTitle)) {
-			//calendarSb.append("preserve=");
 			if (StringUtils.hasText(fromStartDate)){
 				calendarSb.append("fromStartDate:" + fromStartDate);
 			}

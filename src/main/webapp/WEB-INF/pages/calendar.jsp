@@ -8,10 +8,10 @@
 <%@include file="inc/header_inc.jsp" %>
 
 	<div class="calendar_nav">
-		<a href="/w4/calendar.htm?month=${previousCalendar.month}&amp;year=${previousCalendar.year}&amp;day=${previousCalendar.monthLastDay}&amp;${calendarUrl}" title="Events in ${previousCalendar.monthTitle} ${previousCalendar.year}" class="prev_month prev plainlink">&nbsp;<span class="offscreen">Events in ${previousCalendar.monthTitle} ${previousCalendar.year}</span></a>
+		<a href="calendar.htm?month=${previousCalendar.month}&amp;year=${previousCalendar.year}&amp;day=${previousCalendar.monthLastDay}&amp;${calendarUrl}" title="Events in ${previousCalendar.monthTitle} ${previousCalendar.year}" class="prev_month prev plainlink">&nbsp;<span class="offscreen">Events in ${previousCalendar.monthTitle} ${previousCalendar.year}</span></a>
 		<h2>
 			<c:out value="${selectedCalendar.monthTitle}"/> ${selectedCalendar.year}
-		</h2><a href="/w4/calendar.htm?month=${nextCalendar.month}&amp;year=${nextCalendar.year}&amp;day=${nextCalendar.monthFirstDay}&amp;${calendarUrl}" title="Events in ${nextCalendar.monthTitle} ${nextCalendar.year}" class="next_month next plainlink">&nbsp;<span class="offscreen">Events in ${nextCalendar.monthTitle} ${nextCalendar.year}</span></a>
+		</h2><a href="calendar.htm?month=${nextCalendar.month}&amp;year=${nextCalendar.year}&amp;day=${nextCalendar.monthFirstDay}&amp;${calendarUrl}" title="Events in ${nextCalendar.monthTitle} ${nextCalendar.year}" class="next_month next plainlink">&nbsp;<span class="offscreen">Events in ${nextCalendar.monthTitle} ${nextCalendar.year}</span></a>
 	</div>
 	<table summary="Contains links to events in ${selectedCalendar.monthTitle} ${selectedCalendar.year}" class="calendar">
 		<thead>
@@ -78,7 +78,7 @@
 										<td class="${cssClass}">
 													<c:choose>
 														<c:when test="${dates[loop_date]==1}">
-															<a href="/w4/calendar.htm?day=${loop_date}&amp;month=${selectedCalendar.month}&amp;year=${selectedCalendar.year}&amp;${calendarUrl}" >${loop_date}</a>
+															<a href="calendar.htm?day=${loop_date}&amp;month=${selectedCalendar.month}&amp;year=${selectedCalendar.year}&amp;${calendarUrl}" >${loop_date}</a>
 														</c:when>
 														<c:otherwise>
 															<span>${loop_date}</span>
@@ -120,7 +120,7 @@
 										<td class="${cssClass}">
 													<c:choose>
 														<c:when test="${dates[loop_date]==1}">
-															<a href="/w4/calendar.htm?day=${loop_date}&amp;month=${selectedCalendar.month}&amp;year=${selectedCalendar.year}&amp;${calendarUrl}" >${loop_date}</a>
+															<a href="calendar.htm?day=${loop_date}&amp;month=${selectedCalendar.month}&amp;year=${selectedCalendar.year}&amp;${calendarUrl}" >${loop_date}</a>
 														</c:when>
 														<c:otherwise>
 															<span>${loop_date}</span>

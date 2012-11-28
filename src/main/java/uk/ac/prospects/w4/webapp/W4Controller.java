@@ -14,6 +14,7 @@ import uk.ac.prospects.w4.domain.Course;
 import uk.ac.prospects.w4.repository.CourseRepository;
 import uk.ac.prospects.w4.repository.CourseSearchArgument;
 import uk.ac.prospects.w4.services.helper.CourseGenerator;
+import uk.ac.prospects.w4.webapp.validation.DateValidator;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -21,9 +22,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Controller class that handles the requests for the widget
@@ -186,11 +185,29 @@ public class W4Controller {
 	public ModelAndView generateIframeURL(@RequestParam(value = "provid", required = false) String provId,
 										  @RequestParam(value = "fromStartDate", required = false) String fromStartDate,
 										  @RequestParam(value = "toStartDate", required = false) String toStartDate,
-										  @RequestParam(value = "keywords", required = false) String keywords
+										  @RequestParam(value = "keywords", required = false) String keywords,
+										  @RequestParam(value = "provTitle", required = false) String provTitle,
+										  @RequestParam(value = "courseTitle", required = false) String courseTitle
 	) throws IOException, SAXException, XPathExpressionException, ParseException, ParserConfigurationException {
 
 		ModelAndView model = new ModelAndView("preview");
-		model.addObject("searchParams", "keyword=" + keywords + "&provid=" + provId + "&fromStartDate=" + fromStartDate + "&toStartDate=" + toStartDate);
+
+		Map<String, String> errors = new HashMap<String, String>();
+		if(!DateValidator.validate(fromStartDate)){
+			errors.put("fromStartDate", "'From date' is entered incorrectly. Please check the format.");
+		}
+
+		if(!DateValidator.validate(toStartDate)){
+			errors.put("toStartDate", "'To date' is entered incorrectly. Please check the format.");
+
+		}
+		if(errors.isEmpty()){
+			model.addObject("searchParams", UrlBuilder.buildCalendarURL(provId, provTitle, keywords, fromStartDate, toStartDate, courseTitle));
+		}else{
+
+			model = new ModelAndView("codeGenerator");
+			model.addObject("errors", errors);
+		}
 		return model;
 	}
 
