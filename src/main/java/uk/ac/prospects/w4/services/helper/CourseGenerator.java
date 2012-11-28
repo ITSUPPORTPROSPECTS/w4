@@ -260,7 +260,7 @@ public class CourseGenerator {
 
 		if (StringUtils.hasText(startDate))
 			course.setStartDate(dateFormat.parse(startDate));
-
+		
 		//get venue postcode
 		XPathExpression postcodeExpr = xpath.compile(XPATH_COURSE_PRESENTATION_POSTCODE_FOR_JASON_RESULT);
 		course.setPostcode(postcodeExpr.evaluate(node));
