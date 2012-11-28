@@ -32,10 +32,15 @@
     </div>
 </div>
 
-
-<c:forEach var="error" items="${errors}">
-	<p> ${error.key} = ${error.value}</p>
-</c:forEach>
+<%--
+<c:if test="${not empty errors}">
+    <div class="alert alert-error">
+        <c:forEach var="error" items="${errors}">
+            <p> ${error.key} = ${error.value}</p>
+        </c:forEach>
+    </div>
+</c:if>
+--%>
 
 
 <div class="container">
@@ -75,6 +80,13 @@
             <c:set var="iframeVar"
                    value="<iframe src=\"${widgetUrl}?${searchParams}\" frameborder=\"0\" border=\"0\" width=\"100%\" scrolling=\"no\" allowtransparency=\"true\" style=\"border:none; overflow: hidden; width: 100%; height: 500px;\"/></iframe>"/>
 
+            <c:if test="${not empty errors}">
+                <div class="alert alert-error">
+                    <c:forEach var="error" items="${errors}">
+                        <p> ${error.key} = ${error.value}</p>
+                    </c:forEach>
+                </div>
+            </c:if>
 
             <form action="codeReview" method="get">
                 <div class="margbottom">
