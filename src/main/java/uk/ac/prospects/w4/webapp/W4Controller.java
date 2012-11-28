@@ -29,6 +29,7 @@ import java.util.*;
  */
 @Controller
 public class W4Controller {
+	private static final String PROVID_PROPERTIES = "provider.properties";
 
 	private static final int MAX_RESULTS = 200;
 
@@ -193,28 +194,51 @@ public class W4Controller {
 		ModelAndView model = new ModelAndView("preview");
 
 		Map<String, String> errors = new HashMap<String, String>();
-		if(!DateValidator.validate(fromStartDate)){
+		if (!DateValidator.validate(fromStartDate)) {
 			errors.put("fromStartDate", "'From date' is entered incorrectly. Please check the format.");
 		}
 
-		if(!DateValidator.validate(toStartDate)){
+		if (!DateValidator.validate(toStartDate)) {
 			errors.put("toStartDate", "'To date' is entered incorrectly. Please check the format.");
 
 		}
-		if(errors.isEmpty()){
+		if (errors.isEmpty()) {
 			model.addObject("searchParams", UrlBuilder.buildCalendarURL(provId, provTitle, keywords, fromStartDate, toStartDate, courseTitle));
-		}else{
+		} else {
 
 			model = new ModelAndView("codeGenerator");
 			model.addObject("errors", errors);
 		}
-		return model;
+
+		return loadProvider(model);
 	}
 
 	@RequestMapping(value = "codeGenerator.htm", method = RequestMethod.GET)
-	public String codeGeneratorSearchPage() {
-		return "codeGenerator";
+	public ModelAndView codeGeneratorSearchPage() {
+		ModelAndView model = new ModelAndView("codeGenerator");
+		return loadProvider(model);
+
 	}
+
+	private ModelAndView loadProvider(ModelAndView model) {
+		final Properties properties = new Properties();
+		try {
+
+			properties.load(this.getClass().getResourceAsStream(PROVID_PROPERTIES));
+			Map<String, String> providers = new HashMap<String, String>();
+
+			Set<Map.Entry<Object, Object>> providerEntrys = properties.entrySet();
+			for (Map.Entry<Object, Object> providerEntry : providerEntrys) {
+				providers.put(providerEntry.getKey().toString(), providerEntry.getValue().toString());
+			}
+			providers.put("", "All");
+			model.addObject("providers", providers);
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+		return model;
+	}
+
 
 	private String getFormattedFromStartDateFromCalendarFirstDayOfTheMonth(Calendar calendar, String dateFormatToExpect) {
 		Calendar monthCalendar = Calendar.getInstance();
