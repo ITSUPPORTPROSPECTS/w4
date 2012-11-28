@@ -33,15 +33,6 @@
 </div>
 
 
-<%--<c:if test="${not empty errors}">
-    <div class="alert alert-error">
-        <c:forEach var="error" items="${errors}">
-            <p> ${error.key} = ${error.value}</p>
-        </c:forEach>
-    </div>
-</c:if>--%>
-
-
 
 <div class="container">
     <div class="row">
