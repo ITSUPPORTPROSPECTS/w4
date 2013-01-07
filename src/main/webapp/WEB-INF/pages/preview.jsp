@@ -59,6 +59,12 @@
 
                 </c:when>
 
+                <c:when test="${fn:contains(pageUrl,'demo.api.prospects.ac.uk')}">
+
+                    <c:set var="widgetUrl" value="http://demo.api.prospects.ac.uk/w4/calendar.htm"/>
+
+                </c:when>
+
                 <c:otherwise>
 
                     <c:set var="widgetUrl" value="http://localhost:8080/w4/calendar.htm"/>
