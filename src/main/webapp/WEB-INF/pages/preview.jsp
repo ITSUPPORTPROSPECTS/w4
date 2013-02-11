@@ -65,6 +65,12 @@
 
                 </c:when>
 
+                <c:when test="${fn:contains(pageUrl,'demo.api.prospects.ac.uk')}">
+
+                    <c:set var="widgetUrl" value="http://demo.api.prospects.ac.uk/w4/calendar.htm"/>
+
+                </c:when>
+
                 <c:otherwise>
 
                     <c:set var="widgetUrl" value="http://localhost:8080/w4/calendar.htm"/>
@@ -83,6 +89,8 @@
                     </c:forEach>
                 </div>
             </c:if>
+
+						<p>Simply enter your search criteria and click 'Generate'.</p>
 
             <form action="codeReview" method="get">
                 <div class="margbottom">
@@ -118,12 +126,17 @@
                 </div>
             </form>
 
-            <pre><c:out value="${iframeVar}"/></pre>
+            <h3>Generated code</h3>
+						<p>Copy and paste this code into your page. <strong>Note: please do not deploy on
+						a public website without our permission</strong></p>
+						
+						<pre><c:out value="${iframeVar}"/></pre>
 
         </div>
 
         <div class="span3">
             <h3>Preview</h3>
+						<p>This is how your widget will look and behave:</p>
             <c:out value="${iframeVar}" escapeXml="false"/>
         </div>
     </div>

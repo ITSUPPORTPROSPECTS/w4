@@ -33,6 +33,7 @@
 </div>
 
 
+
 <div class="container">
     <div class="row">
         <div class="span12">
@@ -44,6 +45,8 @@
                     </c:forEach>
                 </div>
             </c:if>
+						
+						<p>Simply enter your search criteria and click 'Generate'.</p>
 
             <form action="codeReview" method="get">
                 <div>
