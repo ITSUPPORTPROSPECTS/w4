@@ -8,6 +8,7 @@ pageContext.setAttribute("alpha", alpha);
 %>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 
+<jsp:useBean id="addressToMarker" class="java.util.HashMap" scope="request"/>
 <c:set var="selectedPage" value="Map" />
 
 <%@include file="inc/header_inc.jsp" %>
@@ -17,72 +18,36 @@ pageContext.setAttribute("alpha", alpha);
     	var geocoder;
     	var map;
     	var alpha = new Array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
-    	var locations = new Array();
     	var n = 0;
 
       	function initialize() {
-      		geocoder = new google.maps.Geocoder();
-			var courses = {
-				'courses':
-					[
-					<c:forEach var="course" items="${courses}" varStatus="status">
-					{
-						'name': "${fn:replace(course.title, newLineChar, "")}",
-						'url' : "${course.url}",
-						'address': "${course.street} ${course.town} ${course.postcode}",
-                    	'coords' : "${course.providerLatitude}, ${course.providerLongitude}"
-					}
-					<c:if test="${!status.last}">,</c:if>
-					</c:forEach>
-					]
-				}
 	        	map = new google.maps.Map(document.getElementById("map_canvas"),
 	            {
 	            	center: new google.maps.LatLng(54.367759,-4.244018),
 	            	zoom: 4,
 	            	mapTypeId: 'hybrid'
 	            });
+					
+      		geocoder = new google.maps.Geocoder();
 
-	       	if (courses) {
-	       		for (var level in courses) {
-	       			for (var i = 0; i < courses[level].length; i++) {
-	       				if (n < 26) {
-		       				if (courses[level][i].coords == "0.0000000000, 0.0000000000") {
-		       					if (courses[level][i].address != "  ") {
-		       						codeAddress(courses[level][i].address, index);	
-		       					}
-		       				} else {
-		       					var latLng = courses[level][i].coords.split(",");
-		       					new google.maps.Marker({
+					<c:set var="marker" value="0"/>
+					<c:forEach var="course" items="${courses}" varStatus="status">
+						<c:set var="coords" value="${course.providerLatitude},${course.providerLongitude}"/>
+						<c:if test="${empty addressToMarker[coords]}">
+							<c:set target="${addressToMarker}" property="${coords}" value="${marker}"/>
+							var latLng = "${coords}".split(",");
+							new google.maps.Marker({
 									map: map,
 									position: new google.maps.LatLng(latLng[0], latLng[1].trim()),
-									icon: "http://maps.google.com/mapfiles/marker"+alpha[n]+".png",
+									icon: "http://maps.google.com/mapfiles/marker"+alpha[${marker}]+".png",
 									flat: true
-								});
-								n++;
-		       				}
-	       				}
-					}
-	       		}
-	       	}
-
+							});
+							<c:set var="marker" value="${marker + 1}"/>
+						</c:if>
+					</c:forEach>
       	}
 
-		function codeAddress(address, index) {
-			geocoder.geocode({'address':address}, function(results, status) {
-				if (status == google.maps.GeocoderStatus.OK) {
-					new google.maps.Marker({
-						map: map,
-						position: results[i].geometry.location,
-						icon: "http://maps.google.com/mapfiles/marker"+alpha[index]+".png",
-						flat: true
-					});
-					n++;
-				}
-			})
-		}
-
-     	google.maps.event.addDomListener(window, 'load', initialize);
+				google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 
     <div id="map_canvas" style="width:100%; height:250px;"></div>
@@ -96,11 +61,11 @@ pageContext.setAttribute("alpha", alpha);
 				
 
 			    <c:forEach var="course" items="${courses}" varStatus="status">
+						<c:set var="coords" value="${course.providerLatitude},${course.providerLongitude}"/>
+						<c:set var="marker" value="${alpha[addressToMarker[coords]]}"/>
 			        <li class="clearfix">
 			            <div class="left">
-				            <c:if test="${status.count <= 26}">
-				            	<img class="map_marker" src="http://maps.google.com/mapfiles/marker${alpha[status.count-1]}.png" />
-				            </c:if>
+			            	<img class="map_marker" src="http://maps.google.com/mapfiles/marker${marker}.png" />
 			                <div class="primary item">
 			                    <a href="${course.url}" target="_blank">${course.title}</a>
 			                </div>
