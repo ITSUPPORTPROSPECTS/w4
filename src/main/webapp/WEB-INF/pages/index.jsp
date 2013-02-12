@@ -26,7 +26,7 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="#">What? When? Where? Widget</a>
+            <span class="brand">What? When? Where? Widget</span>
         </div>
     </div>
 </div>
@@ -36,7 +36,7 @@
         <div class="span12">
 <h1>W4 &mdash; a What When Where Widget for CPD</h1>
 <p>
-We have developed a <a href="http://en.wikipedia.org/wiki/Web_widget">widget</a> which uses 
+Graduate Prospects have developed a <a href="http://en.wikipedia.org/wiki/Web_widget">widget</a> which uses 
 <a href="http://www.xcri.co.uk/what-is-xcri-cap.html">XCRI-CAP course data feeds</a> to display 
 courses on a calendar and on a map.
 
@@ -52,7 +52,7 @@ to produce an HTML code snippet that you can paste into any web page.
 <ul>
 <li>Use the <a href="codeGenerator.htm">Code Generator</a></li>
 <li>You can also use the <a href="codeGenerator.htm">Code Generator</a> page to see what the widget looks like </li>
-<li><a href="documentation.htm">Documentation</a></li>
+<li><a href="projectdoc/index.html">Documentation</a></li>
 <li><a href="http://prospectssoftware.wordpress.com/category/jisc-xcri-cap-w4-project/">Project blog</a></li>
 <li><a href="http://www.jisc.ac.uk/whatwedo/programmes/elearning/coursedata/demonstrators/w4.aspx">JISC project page</a></li>
 <li><a href="https://github.com/ITSUPPORTPROSPECTS/w4">github repository</a></li>

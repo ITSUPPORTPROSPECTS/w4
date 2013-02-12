@@ -27,7 +27,7 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="#">What? When? Where? Widget &raquo; Code Generator</a>
+            <span class="brand"><a href="index.htm">What? When? Where? Widget</a> &raquo; Code Generator</a></span>
         </div>
     </div>
 </div>
