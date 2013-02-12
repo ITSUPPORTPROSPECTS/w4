@@ -5,7 +5,60 @@
     <groupId>uk.ac.prospects.w4</groupId>
     <artifactId>w4</artifactId>
     <packaging>war</packaging>
-    <name>Prospects w4 POM</name>
+    <name>Prospects W4 What When Where Widget</name>
+    <description>
+Graduate Prospects have developed a widget which uses 
+XCRI-CAP course data feeds to display courses on a calendar and on a map.
+
+The widget is simple to prepare and deploy. Simply go to http://demo.api.prospects.ac.uk/w4/index.htm and use our Code Generator 
+to produce an HTML code snippet that you can paste into any web page. 
+
+This project is funded by the JISC course data programme.
+    </description>
+    <url>http://demo.api.prospects.ac.uk/w4/index.htm</url>
+    <inceptionYear>2012</inceptionYear>
+    <organization>
+      <name>Graduate Prospects</name>
+      <url>http://www.prospects.ac.uk</url>
+    </organization>
+    <licenses>
+      <license>
+        <name>Modified BSD 3-clause License</name>
+        <url>http://opensource.org/licenses/BSD-3-Clause</url>
+        <distribution>manual</distribution>
+        <comments></comments>
+      </license>
+    </licenses>
+    <developers>
+      <developer>
+        <name>Shuai Geng</name>
+        <organization>Graduate Prospects</organization>
+        <roles>
+          <role>developer</role>
+        </roles>
+      </developer>
+      <developer>
+        <name>Vasileios Liolios</name>
+        <organization>Graduate Prospects</organization>
+        <roles>
+          <role>developer</role>
+        </roles>
+      </developer>
+      <developer>
+        <name>Malvine Logina</name>
+        <organization>Graduate Prospects</organization>
+        <roles>
+          <role>developer</role>
+        </roles>
+      </developer>
+      <developer>
+        <name>Nick Price</name>
+        <organization>Graduate Prospects</organization>
+        <roles>
+          <role>web developer</role>
+        </roles>
+      </developer>
+    </developers>
     <version>1.0.0</version>
 
     <properties>
@@ -164,5 +217,15 @@
 
         </plugins>
     </build>
-
+    <reporting>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.9</version>
+          <configuration>
+          </configuration>
+        </plugin>
+      </plugins>
+    </reporting>
 </project>
