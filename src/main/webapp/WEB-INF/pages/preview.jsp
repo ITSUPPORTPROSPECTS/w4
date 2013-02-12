@@ -1,3 +1,14 @@
+<%--
+Copyright (c) Graduate Prospects 2012
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the BSD 3-Clause License as published by
+the Free Software Foundation.
+
+You should have received a copy of the BSD 3-Clause License 
+along with this program.  If not, see http://opensource.org/licenses/BSD-3-Clause
+--%>
+
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -27,7 +38,7 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="#">What? When? Where? Widget &raquo; Code Generator</a>
+            <span class="brand"><a href="index.htm">What? When? Where? Widget</a> &raquo; Code Generator</a></span>
         </div>
     </div>
 </div>
