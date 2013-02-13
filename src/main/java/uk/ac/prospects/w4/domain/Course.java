@@ -161,10 +161,11 @@ public class Course {
 	}
 
 	/**
-	 * generate a copy of course for different presentations
+	 * Copies a  course into this course. Used when a course has multiple presentations.
 	 *
-	 * @param course
-	 * @param index
+	 * @param course the course to copy
+	 * @param index unique number used to generate an id in combination with the 
+	 *     original course's id
 	 */
 	public void copyCourse(Course course, Integer index) {
 		this.setId(course.getId() + "suffix" + index);

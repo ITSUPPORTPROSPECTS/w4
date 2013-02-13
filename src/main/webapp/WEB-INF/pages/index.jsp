@@ -18,7 +18,7 @@ along with this program.  If not, see http://opensource.org/licenses/BSD-3-Claus
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Code What? When? Where? Widget</title>
+    <title>What? When? Where? Widget</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">

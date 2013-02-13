@@ -14,24 +14,31 @@ import io.searchbox.core.Search;
 import org.elasticsearch.index.query.QueryBuilder;
 
 /**
- * Extends the {@link io.searchbox.core.Search} class to overide the {@code getURI} method and add the 'save' parameter to the URI that is used for the elastic search.
+ * Extends the {@link io.searchbox.core.Search} class to overide the {@code getURI} method and add the 'size' parameter to the URI that is used for the elastic search.
  *
  */
 public class GpSearch extends Search {
 	private int maxSearchResults;
 
+	/** Calls super constructor. */
 	public GpSearch() {
 		super();
 	}
 
+	/** Calls super constructor. */
 	public GpSearch(String query) {
 		super(query);
 	}
 
+	/** Calls super constructor. */
 	public GpSearch(QueryBuilder query) {
 		super(query);
 	}
 
+	/** 
+	 * Get the URI with a size parameter appended.
+	 * @return the URI
+	 */
 	@Override
 	public String getURI() {
 		StringBuilder stringBuilder = new StringBuilder(super.getURI());
@@ -43,6 +50,10 @@ public class GpSearch extends Search {
 		return maxSearchResults;
 	}
 
+	/**
+	 * Set the maximum number of search results to return.
+	 * @param maxSearchResults the number
+	 */
 	public void setMaxSearchResults(int maxSearchResults) {
 		this.maxSearchResults = maxSearchResults;
 	}

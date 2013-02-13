@@ -13,19 +13,19 @@ package uk.ac.prospects.w4.webapp;
 import org.springframework.util.StringUtils;
 
 /**
- * Constructs the string containing the parameters that need to be preserved accross the widget
+ * Constructs the string containing the parameters that need to be preserved accross the widget.
  */
 public class UrlBuilder {
 
 	/**
-	 * Builds the parameter string for the links to calendar page from other pages
+	 * Builds the parameter string for the links to calendar page from other pages.
 	 *
-	 * @param provId
-	 * @param provTitle
-	 * @param keyword
-	 * @param fromStartDate
-	 * @param toStartDate
-	 * @param courseTitle
+	 * @param provId the course provider to filter on
+	 * @param provTitle a string to match within the course provider title field
+	 * @param keyword a string to match against any text field
+	 * @param fromStartDate search for course presentations which start after this date
+	 * @param toStartDate search for course presentations which start before this date
+	 * @param courseTitle a string to match against the coures title field
 	 * @return The parameter string that needs to be preserved when going to the calendar page from any other page.
 	 */
 	public static String buildCalendarURL(String provId, String provTitle, String keyword, String fromStartDate, String toStartDate, String courseTitle){
@@ -57,12 +57,12 @@ public class UrlBuilder {
 	/**
 	 * Builds the parameter string to all pages apart from calendar
 	 *
-	 * @param provId
-	 * @param provTitle
-	 * @param keyword
-	 * @param fromStartDate
-	 * @param toStartDate
-	 * @param courseTitle
+	 * @param provId the course provider to filter on
+	 * @param provTitle a string to match within the course provider title field
+	 * @param keyword a string to match against any text field
+	 * @param fromStartDate search for course presentations which start after this date
+	 * @param toStartDate search for course presentations which start before this date
+	 * @param courseTitle a string to match against the coures title field
 	 * @return The parameter string that needs to be preserved when going to any page in the widget apart from calendar
 	 */
 	public static String buildGeneralURL(String provId, String provTitle, String keyword, String fromStartDate, String toStartDate, String courseTitle){
@@ -81,6 +81,17 @@ public class UrlBuilder {
 		return sb.toString();
 	}
 
+	/**
+	 * Builds the parameter string to the calendar page from the calendar page
+	 *
+	 * @param provId the course provider to filter on
+	 * @param provTitle a string to match within the course provider title field
+	 * @param keyword a string to match against any text field
+	 * @param fromStartDate search for course presentations which start after this date
+	 * @param toStartDate search for course presentations which start before this date
+	 * @param courseTitle a string to match against the coures title field
+	 * @return The parameter string that needs to be preserved when going to any page in the widget apart from calendar
+	 */
 	public static String buildCalendarURLForCalendarPage(String provId, String provTitle, String keyword, String courseTitle, String preserve){
 		StringBuilder sb = new StringBuilder(buildBasicURL(provId, provTitle, keyword, courseTitle));
 
@@ -93,6 +104,17 @@ public class UrlBuilder {
 		return sb.toString();
 	}
 
+	/**
+	 * Builds the parameter string to all other pages from the calendar page
+	 *
+	 * @param provId the course provider to filter on
+	 * @param provTitle a string to match within the course provider title field
+	 * @param keyword a string to match against any text field
+	 * @param fromStartDate search for course presentations which start after this date
+	 * @param toStartDate search for course presentations which start before this date
+	 * @param courseTitle a string to match against the coures title field
+	 * @return The parameter string that needs to be preserved when going to any page in the widget apart from calendar
+	 */
 	public static String buildGeneralURLForCalendarPage(String provId, String provTitle, String keyword, String courseTitle, String preserve){
 		StringBuilder sb = new StringBuilder(buildBasicURL(provId, provTitle, keyword, courseTitle));
 

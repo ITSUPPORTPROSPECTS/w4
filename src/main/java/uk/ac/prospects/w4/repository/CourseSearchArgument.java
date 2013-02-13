@@ -31,6 +31,9 @@ public class CourseSearchArgument {
 		return providerTitle;
 	}
 
+	/** Set the search to return courses whose course provider title contains the supplied string.
+	 * @param providerTitle the course provider title to search for
+	 */
 	public void setProviderTitle(String providerTitle) {
 		this.providerTitle = providerTitle;
 	}
@@ -43,10 +46,16 @@ public class CourseSearchArgument {
 		return providerId;
 	}
 
+	/** Set the search to return courses which have the supplied course provider id.
+	 * @param providerId the course provider id
+	 */
 	public void setProviderId(String providerId) {
 		this.providerId = providerId;
 	}
 
+	/** Set the search to return courses which have the supplied start date.
+	 * @param startDate the start date
+	 */
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
@@ -55,6 +64,9 @@ public class CourseSearchArgument {
 		return courseTitle;
 	}
 
+	/** Set the search to return courses whose course title contains the supplied string.
+	 * @param courseTitle the course title to search for
+	 */
 	public void setCourseTitle(String courseTitle) {
 		this.courseTitle = courseTitle;
 	}
@@ -63,6 +75,9 @@ public class CourseSearchArgument {
 		return maxResults;
 	}
 
+	/** Set maximum number of courses to return.
+	 * @param maxResults the maximum number
+	 */
 	public void setMaxResults(int maxResults) {
 		this.maxResults = maxResults;
 	}
@@ -71,6 +86,9 @@ public class CourseSearchArgument {
 		return fromStartDate;
 	}
 
+	/** Set the search to return courses which have a start date after the supplied date.
+	 * @param fromStartDate the start date
+	 */
 	public void setFromStartDate(String fromStartDate) {
 		this.fromStartDate = fromStartDate;
 	}
@@ -79,6 +97,9 @@ public class CourseSearchArgument {
 		return toStartDate;
 	}
 
+	/** Set the search to return courses which have a start date before the supplied date.
+	 * @param toStartDate the start date
+	 */
 	public void setToStartDate(String toStartDate) {
 		this.toStartDate = toStartDate;
 	}
@@ -87,6 +108,9 @@ public class CourseSearchArgument {
 		return keyword;
 	}
 
+	/** Set the search to return courses which have the supplied keyword in any field.
+	 * @param keyword the keyword
+	 */
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
@@ -95,6 +119,9 @@ public class CourseSearchArgument {
 		return excludeEmptyStartDates;
 	}
 
+	/** Set whether to exclude courses which have no start date.
+	 * @param excludeEmptyStartDates true means exclude
+	 */
 	public void setExcludeEmptyStartDates(boolean excludeEmptyStartDates) {
 		this.excludeEmptyStartDates = excludeEmptyStartDates;
 	}

@@ -11,11 +11,7 @@ along with this program.  If not, see http://opensource.org/licenses/BSD-3-Claus
 package uk.ac.prospects.w4.domain;
 
 /**
- * Created with IntelliJ IDEA.
- * User: shuaig
- * Date: 19/11/12
- * Time: 10:42
- * To change this template use File | Settings | File Templates.
+ * Holds the information about a course's provider which is required by the widget
  */
 public class CourseProvider {
 	private String title;

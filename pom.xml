@@ -24,9 +24,8 @@ This project is funded by the JISC course data programme.
     <licenses>
       <license>
         <name>Modified BSD 3-clause License</name>
-        <url>http://demo.api.prospects.ac.uk/w4/license.txt</url>
+        <url>http://demo.api.prospects.ac.uk/w4/license.htm</url>
         <distribution>manual</distribution>
-        <comments>hello</comments>
       </license>
     </licenses>
     <developers>

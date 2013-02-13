@@ -34,14 +34,23 @@ public class CourseRepository {
 	private String index;
 	private String type;
 
+	/** Set the URL of the search service. E.g. http://coursedata.k-int.com:9200
+	 * @param server the URL
+	 */
 	public void setServer(String server) {
 		this.server = server;
 	}
 
+	/** Set the index which will be searched. E.g. "courses"
+	 * @param index the index
+	 */
 	public void setIndex(String index) {
 		this.index = index;
 	}
 
+	/** Set the type of  search. E.g. "course"
+	 * @param type the type
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
@@ -51,7 +60,7 @@ public class CourseRepository {
 	 * The query is constructed based on the {@code argument} passed to the method.
 	 *
 	 * @param argument The argument that holds the search criteria ({@link uk.ac.prospects.w4.repository.CourseSearchArgument})
-	 * @return
+	 * @return  search result as JSON string
 	 */
 	public String findAllCourses(CourseSearchArgument argument){
 

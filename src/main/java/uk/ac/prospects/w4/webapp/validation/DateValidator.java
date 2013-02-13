@@ -14,7 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 /**
- * @author malvinel
+ * Validates dates as input by the user on the code generator page.
  */
 public class DateValidator {
 
@@ -23,6 +23,11 @@ public class DateValidator {
 	private static final String YEAR_DATE_FORMAT = "yyyy";
 
 
+	/** Validates dates as input by the user.
+	 * Accepts an empty value; a full date with year, month and day; a year and month; or just a year
+	 * @param startDate the date
+	 * @return whether the date value is valid
+	 */
 	public static boolean validate(String startDate){
 		if(startDate== null || startDate.trim().isEmpty()){
 			return true;

@@ -36,7 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Controller class that handles the requests for the widget
+ * Controller class that handles the requests for the widget.
  */
 @Controller
 public class W4Controller {
@@ -53,6 +53,12 @@ public class W4Controller {
 		this.courseRepository = courseRepository;
 	}
 
+	/** 
+	 * Display any page, making URLs for the widget available in the model. The supplied
+	 * parameters are incorporated into the widget URLs.
+	 *
+	 * @return the MVC model and view
+	 */
 	@RequestMapping(value = "/{page}.htm", method = RequestMethod.GET)
 	public ModelAndView anyPage(@PathVariable String page,
 								@RequestParam(value = "provid", required = false) String provId,
@@ -70,7 +76,9 @@ public class W4Controller {
 		return model;
 	}
 
-	@RequestMapping(value = "/index.htm", method = RequestMethod.GET)
+	/**
+	 * Adds a list of courses to the model. The supplied parameters are used in the search for courses.
+	 */
 	public ModelAndView retrieveCourseProviderAndCourse(@RequestParam(value = "provid", required = false) String provId,
 														@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
 														@RequestParam(value = "toStartDate", required = false) String toStartDate,
@@ -108,6 +116,9 @@ public class W4Controller {
 		return model;
 	}
 
+	/**
+	 * Show the map in the widget. The supplied parameters are used in the search for courses.
+	 */
 	@RequestMapping(value = "/map.htm", method = RequestMethod.GET)
 	public ModelAndView retrieveGoogleMapLocations(@RequestParam(value = "provid", required = false) String provId,
 												   @RequestParam(value = "fromStartDate", required = false) String fromStartDate,
@@ -122,6 +133,9 @@ public class W4Controller {
 	}
 
 
+	/**
+	 * Show the calendar in the widget. The supplied parameters are used in the search for courses.
+	 */
 	@RequestMapping(value = "/calendar.htm", method = RequestMethod.GET)
 	public ModelAndView retriveCalendar(@RequestParam(value = "provid", required = false) String provId,
 										@RequestParam(value = "fromStartDate", required = false) String fromStartDate,
@@ -193,6 +207,9 @@ public class W4Controller {
 		return model;
 	}
 
+	/**
+	 * Show the code generator with HTML snippet and preview. The supplied parameters are used in the search for courses.
+	 */
 	@RequestMapping(value = "/codeReview", method = RequestMethod.GET)
 	public ModelAndView generateIframeURL(@RequestParam(value = "provid", required = false) String provId,
 										  @RequestParam(value = "fromStartDate", required = false) String fromStartDate,
@@ -224,6 +241,9 @@ public class W4Controller {
 		return loadProvider(model);
 	}
 
+	/**
+	 * Show the code generator. The supplied parameters are used in the search for courses.
+	 */
 	@RequestMapping(value = "codeGenerator.htm", method = RequestMethod.GET)
 	public ModelAndView codeGeneratorSearchPage() {
 		ModelAndView model = new ModelAndView("codeGenerator");
@@ -284,6 +304,7 @@ public class W4Controller {
 		return calendar;
 	}
 
+	/** Represents a month as displayed in a month-to-view calendar. */
 	public class CalendarValues implements Serializable {
 		private static final long serialVersionUID = -7723338363691165352L;
 		private int month;
@@ -326,6 +347,11 @@ public class W4Controller {
 			return monthFirstDayWeekday;
 		}
 
+		/** Creates a month-to-view calendar based on a given date plus or minus a number of months offset.
+		 *
+		 * @param calendar the base date
+		 * @param the number of months to offset
+		 */
 		CalendarValues(Calendar calendar, int addMonths) {
 			calendar.add(Calendar.MONTH, addMonths);
 			this.month = calendar.get(Calendar.MONTH) + 1;

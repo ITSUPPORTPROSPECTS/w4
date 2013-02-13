@@ -40,11 +40,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created with IntelliJ IDEA.
- * User: shuaig
- * Date: 20/11/12
- * Time: 21:41
- * To change this template use File | Settings | File Templates.
+ * Provides service to convert a JSON search result into a list of course presentations.
  */
 public class CourseGenerator {
 
@@ -83,17 +79,23 @@ public class CourseGenerator {
 
 
 	/**
-	 * generate courses from json search results
+	 * Generate courses from json search results. If a course has multiple presentations 
+	 * the results will contain one course for each presentation. If startDate is
+	 * supplied, only presentations with that start date will be included. If
+	 * startFromDate is supplied, only presentations with a start date after that
+	 * will be included. If
+	 * startToDate is supplied, only presentations with a start date before that
+	 * will be included. 
 	 *
 	 * @param jsonSearchResult course json search result
-	 * @param startDate        the specific startDate from calendar
-	 * @param startFromDate    return course after this date
-	 * @param startToDate      return course before this date
+	 * @param startDate        return only course presentations with this start date
+	 * @param startFromDate    return only course presentation with a start date after this
+	 * @param startToDate      return only course presentation with a start date before this
 	 * @return a list of courses object
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws XPathExpressionException
-	 * @throws ParserConfigurationException
+	 * @throws IOException IOException
+	 * @throws SAXException SAXException
+	 * @throws XPathExpressionException XPathExpressionException
+	 * @throws ParserConfigurationException ParserConfigurationException
 	 */
 	public static List<Course> generateCoursesFromJsonSearchResult(String jsonSearchResult, Date startDate, Date startFromDate, Date startToDate) throws IOException,
 			SAXException, XPathExpressionException, ParserConfigurationException, ParseException {

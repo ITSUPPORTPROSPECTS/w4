@@ -49,10 +49,18 @@ public class Location {
 		locationPostcodeMap.put("YH", new String[]{"BD","DL","DN","HD","HG","HU","HX","LS","S","WF","YO"});
 	}
 
+	/** Gets a map from region code to region name.
+	 * e.g. "NWE" -> "North West England"
+	 * @return the map
+	 */
 	public static Map<String, String> getLocationCodeMap(){
 		return locationCodeMap;
 	}
 
+	/** Gets a map from region code to an array of postcode prefixes.
+	 * e.g "NEE" -> {"DH","DL","NE","SR","TD","TS"}
+	 * @return the map
+	 */
 	public static Map<String, String[]> getLocationPostcodeMap(){
 		return locationPostcodeMap;
 	}
